@@ -1,0 +1,46 @@
+config : 
+    location : /root/home/vinanti/redfish-agent/config/scripts
+    timeout : 1.0
+    scriptnames : Ilo_Chassis_Avg_Power,Ilo_Chassis_Max_Power,Ilo_Chassis_Min_Power,Ilo_CPU_Voltage,Ilo_CPU_Freq,Ilo_Memory_Voltage,Ilo_Memory_Freq
+         
+ilo:
+    Chassis:
+        AvgPower:
+            URL: /rest/v1/Chassis/1/Power/FastPowerMeter
+            get: Average
+            script: Ilo_Chassis_Avg_Power.py
+            timeout: 3.0
+        MaxPower:
+            URL: /redfish/v1/Chassis/1/Power/FastPowerMeter/
+            get: Maximum
+            script: Ilo_Chassis_Max_Power.py
+        MinPower:
+            URL: /redfish/v1/Chassis/1/Power/FastPowerMeter/
+            get: Minimum
+            script: Ilo_Chassis_Min_Power.py
+    CPU:
+        Voltage:
+            URL: /redfish/v1/Systems/1/Processors/1/
+            get: VoltageVoltsX10
+            script: Ilo_CPU_Voltage.py
+        Temperature:
+            URL: /redfish/v1/Chassis/1/Thermal/
+            get: CurrentReading
+        Frequency:
+            URL: /redfish/v1/Systems/1/Processors/1/ 
+            get: MaxSpeedMHz
+            script: Ilo_CPU_Freq.py
+    Memory:
+        Voltage:
+            URL: /redfish/v1/Systems/1/Memory/
+            get: MinimumVoltageVoltsX10
+            script: Ilo_Memory_Voltage.py
+        Temperature:
+            URL: /redfish/v1/Chassis/1/Thermal/
+            get: CurrentReading
+        Frequency:
+            URL: /redfish/v1/Systems/1/Memory/
+            get: MaximumFrequencyMHz
+            script: Ilo_Memory_Freq.py
+        
+            
