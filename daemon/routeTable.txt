@@ -1,4 +1,0 @@
-plat.cab0.node0:0:0
-plat.cab0.node1:0:1
-plat.cab0:0:2
-
