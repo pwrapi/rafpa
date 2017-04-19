@@ -3,14 +3,13 @@
 POWERAPI=/opt/PowerAPI
 POWERAPI_BIN=$POWERAPI/bin
 POWERAPI_LIB=$POWERAPI/lib
-ROOT=$0
-XML=$1
+ROOT=$1
+XML=$2
 COUNT=$(echo $* |wc -w)
-echo $COUNT
 if [[ $COUNT -lt  2 ]]
 then
 	echo "Not enough args"
-	exit 1
+	return
 fi
 
 if [[ $COUNT -eq 3 ]]
@@ -25,3 +24,8 @@ export LD_LIBRARY_PATH="$POWERAPI_LIB:${LD_LIBRARY_PATH}"
 export DYLD_LIBRARY_PATH="$POWERAPI_LIB:${DYLD_LIBRARY_PATH}"
 export POWERAPI_CONFIG=$XML
 export POWERAPI_ROOT=$ROOT
+
+
+AGENT_PATH=`pwd`
+export PYTHONPATH=$AGENT_PATH/lib/python:$AGENT_PATH/lib/python/Config:$AGENT_PATH/lib/python/Session
+
