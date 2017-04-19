@@ -1,0 +1,1 @@
+./configure  --prefix=/opt/python-2.7.11  --enable-shared --with-threads --with-ensurepip=install
