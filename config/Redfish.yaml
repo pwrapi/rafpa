@@ -1,5 +1,5 @@
 config : 
-    location : /root/home/vinanti/redfish-agent/config/scripts
+    location : /root/PowerAPI_Working_Code/PowerAPI-Redfish/lib/python/scripts/ILO4
     timeout : 1.0
     scriptnames : Ilo_Chassis_Avg_Power,Ilo_Chassis_Max_Power,Ilo_Chassis_Min_Power,Ilo_CPU_Voltage,Ilo_CPU_Freq,Ilo_Memory_Voltage,Ilo_Memory_Freq
          

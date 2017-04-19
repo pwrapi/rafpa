@@ -5,6 +5,7 @@
 import sys
 import yaml
 #import SessionManager
+configpath="/root/PowerAPI_Working_Code/PowerAPI-Redfish/config"
 
 class config(object):
     
@@ -23,7 +24,7 @@ class config(object):
     def get_config_data(self,input,entity,obj,attribute):
         try:
        #strSourceFileName = strFileName
-            stream =  file("Redfish.yaml", 'r')
+            stream =  file(configpath +"/Redfish.yaml", 'r')
             yamlConfigData = yaml.safe_load(stream)
             stream.close()
             valuefromconfig = yamlConfigData[entity][obj][attribute][input]           
@@ -33,7 +34,7 @@ class config(object):
 
     def ReadILODetails(self,input,iloname):
         try:
-            stream = file("iloConfig.yaml",'r')
+            stream = file(configpath +"/iloConfig.yaml",'r')
             yamlConfigData = yaml.safe_load(stream)
             stream.close()
             IloValue = yamlConfigData[iloname][input]
@@ -43,7 +44,7 @@ class config(object):
 
     def ReadNode(self):
         try:
-            stream = file("iloConfig.yaml",'r')
+            stream = file(configpath +"/iloConfig.yaml",'r')
             yamlConfigData = yaml.safe_load(stream)
             stream.close()
             nodeValue = yamlConfigData["nodename"]
@@ -53,7 +54,7 @@ class config(object):
     
     def ReadGlobalConfig(self,data):
          try:
-            stream = file("Redfish.yaml",'r')
+            stream = file(configpath +"/Redfish.yaml",'r')
             yamlConfigData = yaml.safe_load(stream)
             stream.close()
             output = yamlConfigData["config"][data]

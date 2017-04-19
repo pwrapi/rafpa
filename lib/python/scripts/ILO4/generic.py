@@ -10,16 +10,16 @@ import Util
 class generic(object):
 
     
-    def __init__(self,utilobj,configobj):
+    def __init__(self,configobj):
 	
 #self.utilobj = utilobj
         self.configobj = configobj
 	print "I am generic"
-    def get(self):
+    def run(self,queue,entity,host,device_name,attr):
 	Value = 0    
         try:
 	   	
-            Value = self.utilobj.get(self.configobj)
+            Value = self.get(entity,host,device_name,attr)
             print value
         except Exception as e:
             raise e

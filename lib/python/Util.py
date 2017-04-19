@@ -1,8 +1,8 @@
 #this class has all the common functions required to interface with the other modules
 
 import sys
-from RedfishReadConfig import config
-from Sessions import sessions
+from Config.RedfishReadConfig import config
+from Session.Sessions import sessions
 
 
 

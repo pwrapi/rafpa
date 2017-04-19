@@ -68,7 +68,7 @@ def load_module(modules, mod_name,config):
 
 def load_modules(modules, config):
     try:
-        module_path = Util.get_module_path()
+        module_path = Util.get_module_path(config)
 	sys.path.append(module_path)
         for x in os.listdir(module_path):
             if ".py" == x[-3:]:

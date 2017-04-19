@@ -22,6 +22,7 @@ class sessions(object):
     def createSession(self,iloip,username,password,node):
         try:
             #print self.nodelist
+	    print "{0} {1} {2} {3}".format(iloip,username,password,node)
             REST_OBJ = self.getRestObject(node,iloip,username,password)
                 #print REST_OBJ
             self.dic[node] = REST_OBJ

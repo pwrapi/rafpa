@@ -3,7 +3,7 @@
 import sys
 import os
 from generic import generic
-import UtilBack
+import Util
 import re
 CPUName=""
 

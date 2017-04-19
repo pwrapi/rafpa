@@ -1,10 +1,11 @@
 #!/bin/sh
-ROOT="${PWD}/../.."
+ROOT="${PWD}/../../../../"
+DAEMON="${PWD}/../../"
 export POWERAPI_DEBUG=30
-export LD_LIBRARY_PATH="${ROOT}/lib:${LD_LIBRARY_PATH}"
-export DYLD_LIBRARY_PATH="${ROOT}/lib:${DYLD_LIBRARY_PATH}"
-export POWERAPI_CONFIG="${ROOT}/config/daemon_redfish.xml"
-export CONFIG="${ROOT}/config/myconfig_redfish.xml"
+export LD_LIBRARY_PATH="${ROOT}/opt/PowerAPI/lib:${LD_LIBRARY_PATH}"
+export DYLD_LIBRARY_PATH="${ROOT}/opt/PowerAPI/lib:${DYLD_LIBRARY_PATH}"
+export POWERAPI_CONFIG="${DAEMON}/config/daemon_redfish.xml"
+export CONFIG="${DAEMON}/config/daemon_redfish.xml"
 export POWERAPI_ROOT="plat.cab0.node1"
 ./pwrdaemon \
 --srvr.rtrHost=192.168.2.91 \

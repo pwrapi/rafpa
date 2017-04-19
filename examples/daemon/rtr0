@@ -1,9 +1,10 @@
 #!/bin/sh
 
-ROOT="${PWD}/../.."
+ROOT="${PWD}/../../../../"
+DAEMON="${PWD}/../../"
 export POWERAPI_DEBUG=15
-export POWERAPI_CONFIG="${ROOT}/config/daemon_redfish.xml"
-export CONFIG="${ROOT}/config/daemon_redfish.xml"
+export POWERAPI_CONFIG="${DAEMON}/config/daemon_redfish.xml"
+export CONFIG="${DAEMON}/config/daemon_redfish.xml"
 export POWERAPI_ROOT="plat.cab0"
 
 ./pwrdaemon \
