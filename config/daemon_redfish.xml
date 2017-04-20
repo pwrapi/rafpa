@@ -7,13 +7,10 @@
 </Plugins>
 
 <Devices>
-    <device name="redfish-core1" plugin="redfish" initString="192.168.2.91:8080:local"/>
-    <device name="redfish-core2" plugin="redfish" initString="192.168.2.91:8080:node1"/>
+    <device name="redfish-core1" plugin="redfish" initString="192.168.2.92:8080:local"/>
+    <device name="redfish-core2" plugin="redfish" initString="192.168.2.92:8080:node1"/>
 </Devices>
 
-<Locations>
-    <location name="daemon-cab0"  type="rpc" config="localhost:15000" />
-</Locations>
 
 <Objects>
 
@@ -31,7 +28,7 @@
 
 </obj>
 
-<obj name="plat.cab0" type="Chassis" location="daemon-cab0" >
+<obj name="plat.cab0" type="Chassis" >
 
     <attributes>
         <attr name="POWER" op="AVG" >

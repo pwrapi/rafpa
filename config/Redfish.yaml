@@ -5,42 +5,47 @@ config :
          
 ilo:
     Chassis:
+        Power:
+            URL: /redfish/v1/Chassis/1/Power
+            get: PowerConsumedWatts
+            script: Ilo_Chassis_Power
+            timeout: 3.0
         AvgPower:
             URL: /rest/v1/Chassis/1/Power/FastPowerMeter
             get: Average
-            script: Ilo_Chassis_Avg_Power.py
+            script: Ilo_Chassis_Avg_Power
             timeout: 3.0
         MaxPower:
             URL: /redfish/v1/Chassis/1/Power/FastPowerMeter/
             get: Maximum
-            script: Ilo_Chassis_Max_Power.py
+            script: Ilo_Chassis_Max_Power
         MinPower:
             URL: /redfish/v1/Chassis/1/Power/FastPowerMeter/
             get: Minimum
-            script: Ilo_Chassis_Min_Power.py
+            script: Ilo_Chassis_Min_Power
     CPU:
         Voltage:
             URL: /redfish/v1/Systems/1/Processors/1/
             get: VoltageVoltsX10
-            script: Ilo_CPU_Voltage.py
+            script: Ilo_CPU_Voltage
         Temperature:
             URL: /redfish/v1/Chassis/1/Thermal/
             get: CurrentReading
         Frequency:
             URL: /redfish/v1/Systems/1/Processors/1/ 
             get: MaxSpeedMHz
-            script: Ilo_CPU_Freq.py
+            script: Ilo_CPU_Freq
     Memory:
         Voltage:
             URL: /redfish/v1/Systems/1/Memory/
             get: MinimumVoltageVoltsX10
-            script: Ilo_Memory_Voltage.py
+            script: Ilo_Memory_Voltage
         Temperature:
             URL: /redfish/v1/Chassis/1/Thermal/
             get: CurrentReading
         Frequency:
             URL: /redfish/v1/Systems/1/Memory/
             get: MaximumFrequencyMHz
-            script: Ilo_Memory_Freq.py
+            script: Ilo_Memory_Freq
         
             

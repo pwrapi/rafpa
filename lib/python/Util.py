@@ -154,7 +154,9 @@ def set(self):
         
 def gethandler(configobj,entity,obj,attribute):
 	try:
+	    
 	    getHandler = getRedfishConfigurations(configobj,"script",entity,obj,attribute)
+	    
 	    return getHandler
 	except Exception as e:
 	    raise e

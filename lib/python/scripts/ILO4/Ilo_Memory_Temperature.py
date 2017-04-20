@@ -10,16 +10,16 @@ ProcDimm = ""
 alist = []
 #sys.path.append("/root/home/vinanti/redfishagent")
 
-class Ilo_Memory_Temperature(object):
+class Ilo_Memory_Temperature(generic):
 
     
     def __init__(self,configobj):
-	#generic.__init__(self,utilobj,configobj)
+	generic.__init__(self,configobj)
         self.configobj = configobj
 	#pass
-    def get(self,entity,node,obj,attribute):
+    def get(self,entity=None,node=None,obj=None,attribute=None):
         try:
-	   obj="proc1.dimm8"
+#obj="proc1.dimm8"
 	   obj = obj.split(".")
 	   r = re.compile("([a-zA-Z]+)([0-9]+)")
 	   d = dict([r.match(string).groups() for string in obj])
@@ -27,10 +27,10 @@ class Ilo_Memory_Temperature(object):
            Proc_Str = "P{0}".format(d["proc"])   
            ProcDimm = Proc_Str + " DIMM"
    
-	   URL = UtilBack.getRedfishURL(self.configobj,"URL",entity,"Memory",attribute)
+	   URL = Util.getRedfishURL(self.configobj,"URL",entity,"Memory",attribute)
 	       
-           redfishValue = UtilBack.getRedfishValue(self.configobj,"get",entity,"Memory",attribute)
-           Rest_OBJ = UtilBack.get(self.configobj,node)
+           redfishValue = Util.getRedfishValue(self.configobj,"get",entity,"Memory",attribute)
+           Rest_OBJ = Util.get(self.configobj,node)
            response = Rest_OBJ.rest_get(URL)
 	   for key in response.dict['Temperatures']:
 	       if ProcDimm in key['Name']:

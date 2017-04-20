@@ -126,17 +126,20 @@ class handler(object):
 
 	def get(self,config, sessions, objs,string):
 		entity,redfish_host,device_name,attr = string.split(":")
-		handle_name = Util.gethandler(config,entity, device_name)
-		
+#print entity, device_name,attr
+	 	handle_name = Util.gethandler(config,entity, device_name,attr)
+	        	
 		if handle_name == None:
-			retrun -1
+			return -1
 		try:	
 			handler = objs[handle_name]
 		except KeyError as k:
 			print k
 			return -1	
 		try:
-			value = handler.get(entity, redfish_host, device_name, attr)
+                        value = handler.get(entity, redfish_host, device_name, attr)
+
+#print value
 		except Exception as e:
 			print e	
 			return -1	
@@ -158,5 +161,4 @@ class handler(object):
 		except Exception as e:
 			return -1
 		return status
-
-
+	

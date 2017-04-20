@@ -27,5 +27,5 @@ export POWERAPI_ROOT=$ROOT
 
 
 AGENT_PATH=`pwd`
-export PYTHONPATH=$AGENT_PATH/lib/python:$AGENT_PATH/lib/python/Config:$AGENT_PATH/lib/python/Session
+export PYTHONPATH=$AGENT_PATH/lib/python:$AGENT_PATH/lib/python/Config:$AGENT_PATH/lib/python/Session:$AGENT_PATH/lib/python/Scripts
 
