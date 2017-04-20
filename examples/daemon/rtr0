@@ -7,13 +7,13 @@ export POWERAPI_CONFIG="${DAEMON}/config/daemon_redfish.xml"
 export CONFIG="${DAEMON}/config/daemon_redfish.xml"
 export POWERAPI_ROOT="plat.cab0"
 
-./pwrdaemon \
+/root/PowerAPI_Working_Code/pwrapi-ref/tools/pwrdaemon/./pwrdaemon \
 --rtr.clientPort=15000 \
 --rtr.serverPort=15001 \
 --rtr.routerType=tree \
 --rtr.routerId=0 \
 --rtr.routeTable=routeTable.txt \
---srvr.rtrHost=192.168.2.91 \
+--srvr.rtrHost=192.168.2.92 \
 --srvr.rtrPort=15001 \
 --srvr.pwrApiConfig=$POWERAPI_CONFIG \
 --srvr.pwrApiRoot=plat.cab0

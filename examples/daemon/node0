@@ -7,8 +7,8 @@ export DYLD_LIBRARY_PATH="${ROOT}/opt/PowerAPI/lib:${DYLD_LIBRARY_PATH}"
 export POWERAPI_CONFIG="${DAEMON}/config/daemon_redfish.xml"
 export CONFIG="${DAEMON}/config/daemon_redfish.xml"
 export POWERAPI_ROOT="plat.cab0.node0"
-./pwrdaemon \
---srvr.rtrHost=192.168.2.91 \
+/root/PowerAPI_Working_Code/pwrapi-ref/tools/pwrdaemon/./pwrdaemon \
+--srvr.rtrHost=192.168.2.92 \
 --srvr.rtrPort=15001 \
 --srvr.pwrApiConfig=$POWERAPI_CONFIG \
 --srvr.pwrApiRoot=plat.cab0.node0
