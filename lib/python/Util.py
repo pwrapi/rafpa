@@ -30,17 +30,9 @@ def __init__(self):
 def initialiseSession(configobj):
 	global sessionsdict
         try:
-            #self.getILoConfigurations(configobj)
-            #self.getNodeNames(configobj)
-            #print self.iloname,self.iloip,self.username,self.password,self.nodelist
-            #sessionsobj = sessions(self.iloname,self.iloip,self.username,self.password,self.nodelist)
             sessionsobj = sessions()
-#print type(sessionsobj)	
 	    sessionsdict = getSession(sessionsobj,configobj)
-#print sessionsdict
             return sessionsobj
-            #print seesionsobj , configobj
-            #getSession(sessionsobj,configobj) 
         except Exception as e:
             raise e
 
