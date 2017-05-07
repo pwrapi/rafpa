@@ -164,3 +164,24 @@ def get_module_path(configobj):
         except Exception as e:
            raise e
            	   
+def redfish_server_login(host, username, password):
+	return createsession(host,username,password)
+
+def createSession(host,username,password):
+	REST_OBJ = getRestObject(host,username,password)
+	return REST_OBJ
+            
+            
+def getRestObject(host,username,password):
+	if host == "localhost" :
+		https_url = "blobstore://."
+		account = "None"
+		password = "None"
+	else:
+		https_url = "https://"+ host
+ 		account = username
+		password = password
+
+	restobj = RestObject(https_url, account, password)
+	return restobj
+               

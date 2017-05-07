@@ -55,19 +55,22 @@ class Node(object):
 		while retries < 3:	
 			try:
 				log("Connectiing to server {host} with {user} try {tries}".format(host=self.hostname, user=self.username,tries=retries)	
-				session = Util.redfish_server_handshake(self.hostname,self.username,self.password)
-			except RedfishServerNotExists as e:
-				self.active(False)
-				raise SessionCreateError
-			except RedfishServerCredentialError as e:
-		 		raise SessionCreateError
-			except Exception as e:
+				session = Util.redfish_server_login(self.hostname,self.username,self.password)
+			except ServerDownOrUnreachableError as e:
 				log(e)
 				retries += 1
+			except Exception as e:
+				log(e)
+				self.active(False)
+		 		raise SessionCreateError
 			else:
 				self.storeSessionInfo(session)
 				self.setActive(True)
-
+		else:
+			log("Connectiing to server {host} with {user} exhausted number of tries {tries} ".format(host=self.hostname, \
+							user=self.username,tries=retries)	
+			self.active(False)
+			raise SessionCreateError
 			
 
 	def storeSessionInfo(self, session, time=time()):
