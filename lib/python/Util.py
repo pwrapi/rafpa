@@ -1,78 +1,88 @@
 #this class has all the common functions required to interface with the other modules
 
 import sys
-from Config.RedfishReadConfig import config
+import os
+from ExceptionCollection import SessionCreateError,deviceConfigReadError,ConfigPathError
+from progress.bar import ShadyBar as Bar
+from Config import config
+from Devices import Devices
+from Nodes import Nodes
+
 from Session.Sessions import sessions
 
+configobj = dict()
+nodesobj = dict()
+sessionsdict = dict()
 
+def LoadConfiguration(configdir):
+	readDeviceConfigDir(configdir)
 
-iloip = ""
-username = ""
-password = ""
-nodelist = []
-sessionsdict = {}
-scriptnames = []
-value = ""
-scriptobjdict = {}
-"""
-def __init__(self,entity,object,attribute,action,iloname):
+def LoadSessions(configdir):
+	readNodeConfigDir(configdir)	
 
-        self.entity = entity
-        self.iloname = iloname
-        self.object = object
-        self.attribute = attribute
-        self.action = action
-    
-def __init__(self):
-        pass
-"""    
-
-def initialiseSession(configobj):
-	global sessionsdict
-        try:
-            sessionsobj = sessions()
-	    sessionsdict = getSession(sessionsobj,configobj)
-            return sessionsobj
-        except Exception as e:
-            raise e
-
-    
-def getSession(sessionsobj,configobj):
-	global sessionsdict
-        try:
-            
-            nodelist = getNodeNames(configobj)
-            for node in nodelist:
-#print node
-                iloip = getILoConfigurations(configobj,node,"iloIP")
-		username = getILoConfigurations(configobj,node,"username")
-		password = getILoConfigurations(configobj,node,"password")
-#print iloip,username,password,node
-                sessionsdict = sessionsobj.createSession(iloip,username,password,node)
-#print sessionsdict
-            return sessionsdict
-                      
-        except Exception as e:
-            raise e
-
-
-def initialiseConfiguration():
+def readDeviceConfigDir(configdir,device_dir="devices"):
 	global configobj
-        try:
-            configobj = config()
-#print type(configobj)
-            #configobj = config(self.entity,self.object,self.attribute,self.action,self.iloname)
-            return configobj           
-        except Exception as e:
-            print "Could not initialise Configuration" , e
+	device_dir = os.path.join(configdir,device_dir)
+	conf_files = list()
+		
+	try:
+		conf_files = os.listdir(device_dir)
+	except OSError as e:
+		raise ConfigPathError
+    
+	for conffile in conf_files:
+		full_path = os.path.join(device_dir,conffile)
+		if os.path.isfile(full_path) and isyaml(full_path):
+			entity = conffile.partition(".")[0]
+			configobj[entity] = Devices(conffile,device_dir)
+	
+def readNodeConfigDir(configdir,nodes_dir="location"):
+	global nodesobj
+	nodes_dir = os.path.join(configdir,nodes_dir)
+	conf_files = list()
+		
+	try:
+		conf_files = os.listdir(nodes_dir)
+	except OSError as e:
+		raise ConfigPathError
 
+	for conffile in conf_files:
+		full_path = os.path.join(nodes_dir,conffile)
+		if os.path.isfile(full_path) and isyaml(full_path):
+			nodesionobj = Nodes(conffile,nodes_dir)
+			nodesobj.update(nodes)
+
+
+def getSessionobj():
+	return sessionsdict
+
+def CreateSessions():
+	
+	sessions = getSessionobj()	
+	for node in sessions:
+		nodeobj = sessions[node]
+
+		host = nodeobj.getHost()
+		user = nodeobj.getUsername()
+		password = nodeobj.getPassword()
+		s = create_session(host, user, password)
+		nodesobj.storeSessionInfo(s)
+
+
+
+def isyaml(conffile):
+	prefix,sep,suffix = conffile.partition(".")
+	if suffix == "yaml":
+
+		# It is a YAML file 
+		return True
+	return False
+
+			
 
 def getILoConfigurations(configobj,node,input):
         try:
             ilovalue = configobj.ReadILODetails(input,node)
-#username = configobj.ReadILODetails("username",node)
-#password = configobj.ReadILODetails("password",node)
-#print iloip , username , password	
             return ilovalue   
         except Exception as e:
             raise e
@@ -104,33 +114,13 @@ def getallScripts(configobj):
             return scriptnames
         except Exception as e:
             raise e
-"""
-def initializeAllScripts(self,utilobj,configobj):
-        try:
-        
-            for script in self.scriptnames:
-                print script
-                s = "from scripts."+ script +" import "+ script
-                s               
-                scriptobj = +script+(utilobj,configobj)
-                scriptobjdict[script] = scriptobj
-            return scriptobjdict 
-        except Exception as e:
-            return e
-"""
+
 
 def get(configobj,node):
         try:
-#getValue = getRedfishConfigurations(configobj,"get",entity,obj,attribute)
-#getURL = getRedfishConfigurations(configobj,"URL",entity,obj,attribute)
             for key in sessionsdict:
                 if key == node:
                     REST_OBJ = sessionsdict[key]
-#response = REST_OBJ.rest_get(getURL)
-#if getValue not in response.dict:
-#"No Value found"
-#else:
-#return str(response.dict[getValue])
                     return REST_OBJ
             
         except Exception as e:
