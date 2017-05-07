@@ -1,8 +1,10 @@
 from Config import config as con
 from Config import ConfigParser
 from time import time
-from ExceptionCollection import HostNameMissing,UserNameMissing,PasswordMissing,InvalidEntry
+from ExceptionCollection import HostNameMissing,UserNameMissing,PasswordMissing,InvalidEntry,SessionCreateError
+from Log import Logger
 
+log = Logger()
 
 
 class Nodes(ConfigParser):
@@ -28,13 +30,13 @@ class Nodes(ConfigParser):
 				raise InvalidEntry
 			
 
-
+import Util
 class Node(object):
 
 	def __init__(self,name):
 		self.name = name
 		self.active = False
-		self.session = None
+		self.session = Session()
 	def getName(self):
 		return self.name
 	def setHost(self, hostname):
@@ -50,37 +52,31 @@ class Node(object):
 	def getPassword(self):
 	    return self.password
 	
-	def createSession():
+	def createSession(self):
 		retries = 1	
 		while retries < 3:	
 			try:
-				log("Connectiing to server {host} with {user} try {tries}".format(host=self.hostname, user=self.username,tries=retries)	
+				log.Info("Connectiing to server {host} with {user} try {tries}".format(host=self.hostname, user=self.username,tries=retries))	
 				session = Util.redfish_server_login(self.hostname,self.username,self.password)
-			except ServerDownOrUnreachableError as e:
-				log(e)
-				retries += 1
 			except Exception as e:
-				log(e)
-				self.active(False)
-		 		raise SessionCreateError
+				log.Error(e)
+				retries += 1
 			else:
 				self.storeSessionInfo(session)
 				self.setActive(True)
+				break
 		else:
-			log("Connectiing to server {host} with {user} exhausted number of tries {tries} ".format(host=self.hostname, \
-							user=self.username,tries=retries)	
-			self.active(False)
+			log.Error("Connecting to server {host} with {user} exhausted number of tries {tries} ".format(host=self.hostname,user=self.username,tries=retries))	
+			self.setActive(False)
 			raise SessionCreateError
 			
 
 	def storeSessionInfo(self, session, time=time()):
-		S = Session(session,time)
-		self.session = s
-		self.expired = False
+		self.session.set(session,time)
 			
 		
 	def getSession(self):
-		return self.session.getSession()
+		return self.session.get()
 
 	def isActive(self):
 		return self.active
@@ -91,7 +87,7 @@ class Session():
 	def __init__(self):
 		self.session = None
 		self.expired= True
-	def load(self,session, time= time()):	
+	def set(self,session, time= time()):	
 		self.session = session
 		self.start = time
 		self.elapsed = 0
