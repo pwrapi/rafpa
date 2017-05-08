@@ -46,7 +46,7 @@ def load_sessions():
 		if config_path == None:
 			raise ConfigError
         Util.LoadSessionConfig(config_path)
-		Util.CreateSessions()
+
     except ConfigError as e:
 		log.Error(e)
 		exit(255)	
