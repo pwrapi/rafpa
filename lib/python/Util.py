@@ -2,8 +2,7 @@
 
 import sys
 import os
-from ExceptionCollection import SessionCreateError,deviceConfigReadError,ConfigPathError
-from progress.bar import ShadyBar as Bar
+from ExceptionCollection import SessionCreateError,deviceConfigReadError,ConfigPathError,ModuleImportError
 from Config import config
 from Devices import Devices
 from Nodes import Nodes
@@ -89,3 +88,17 @@ def getRestObject(host,username,password):
 	restobj = RestObject(https_url, account, password)
 	return restobj
                
+def load_module(mod_name, device, attribute):
+    try:
+        log.Info("Importing module {0}".format(mod_name))
+        mod = __import__(mod_name)
+        Object_hash = eval("mod."+mod_name)
+        Object = Object_hash(device, attribute)
+        log.Info(mod_name+" loaded successfully")
+    except (ImportError, AttributeError,KeyError,TypeError) as e:
+        log.Error("Loading module {module} was unsuccesssful {exc}".format(module=mod_name,exc=e))
+        raise ModuleImportError
+    else:
+        return Object
+
+

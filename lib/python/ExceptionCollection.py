@@ -35,3 +35,5 @@ class ScriptMissing(agentException):
 	message = "Missing script for the attribute"
 class SessionCreateError(agentException):
 	message ="Error in creating session"
+class ModuleImportError(agentException):
+	message = " Error in importing module"
