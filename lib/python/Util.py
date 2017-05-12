@@ -9,7 +9,6 @@ from Nodes import Nodes
 from _restobject import RestObject
 configobj = dict()
 nodesobj = dict()
-sessionsdict = dict()
 
 def LoadConfiguration(configdir):
 	readDeviceConfigDir(configdir)
@@ -59,16 +58,16 @@ def isyaml(conffile):
 		return True
 	return False
 
-def getSessionobj():
-	return sessionsdict
+def getNodesobj():
+    global nodesobj
+    return nodesobj
 			
 
-def getNodeNames(configobj):
-	pass
-          
-           	   
+def getNodeNames():
+    return getNodesobj().keys()
+
 def redfish_server_login(host, username, password):
-	return createSession(host,username,password)
+    return createSession(host,username,password)
 
 def createSession(host,username,password):
 	REST_OBJ = getRestObject(host,username,password)
@@ -76,18 +75,19 @@ def createSession(host,username,password):
             
             
 def getRestObject(host,username,password):
-	if host == "localhost" :
-		https_url = "blobstore://."
-		account = "None"
-		password = "None"
-	else:
-		https_url = "https://"+ host
- 		account = username
-		password = password
+    account,password = None,None
+    if host == "localhost" :
+        https_url = "blobstore://."
+        account = "None"
+        password = "None"
+    else:
+        https_url = "https://"+ host
+        account = username
+        password = password
 
-	restobj = RestObject(https_url, account, password)
-	return restobj
-               
+    restobj = RestObject(https_url, account, password)
+    return restobj
+
 def load_module(mod_name, device, attribute):
     try:
         log.Info("Importing module {0}".format(mod_name))
@@ -100,5 +100,15 @@ def load_module(mod_name, device, attribute):
         raise ModuleImportError
     else:
         return Object
+
+def get_config_path():
+
+    config_path = os.environ.get('CONFIG_PATH')
+    if config_path == None or os.path.isdir(config_path) == False:
+        log.Error("Environment varaible CONFIG_PATH is not set.")
+        raise ConfigPathError
+    else:
+        return config_path
+
 
 

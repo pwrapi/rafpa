@@ -56,7 +56,7 @@ class Node(object):
 		retries = 1	
 		while retries < 3:	
 			try:
-				log.Info("Connectiing to server {host} with {user} try {tries}".format(host=self.hostname, user=self.username,tries=retries))	
+				log.Info("Connecting to server {host} with {user} try {tries}".format(host=self.hostname, user=self.username,tries=retries))
 				session = Util.redfish_server_login(self.hostname,self.username,self.password)
 			except Exception as e:
 				log.Error(e)

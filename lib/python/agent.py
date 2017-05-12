@@ -4,7 +4,7 @@ import Util
 import os
 import sys
 from Log import Logger,Log  
-from ExceptionCollection import ConfigError
+from ExceptionCollection import ConfigError, ConfigPathError, SessionCreateError
 
 
 
@@ -24,53 +24,60 @@ def signal_handler(signum, frame):
     log.Info("Received signal {signo}. Stopping!!".format(signo=signum))
     loop = 0
 
-    
+
 def load_config():
     # CONFIG_PATH from Environment
 
-    try:
-        config_path = os.environ.get('CONFIG_PATH')
-        if config_path == None:
-            log.Error("CONFIG_PATH is not set")
-            raise ConfigError
-        dconfig = Util.LoadConfiguration(config_path)
-    except ConfigError as e:
-        log.Error("Error in Loading configuration {0} ".format(e))
-        exit(255)
-    else:
-        log.Info("Successfully Loaded Configuration database")
-		
-	
-def load_sessions():
-    try:
-        config_path = os.environ.get('CONFIG_PATH')
-        if config_path == None:
-            raise ConfigError
-        Util.LoadSessionConfig(config_path)
+    config_path = Util.get_config_path()
+    dconfig = Util.LoadConfiguration(config_path)
+    log.Info("Successfully Loaded Configuration database")
 
-    except ConfigError as e:
-        log.Error(e)
-        exit(255)
-    else:
-        pass
+def load_sessions():
+
+    config_path = Util.get_config_path()
+    Util.LoadSessions(config_path)
+    nodenames = Util.getNodeNames()
+    for node in iter(Util.getNodesobj().values()):
+        try:
+            #node.createSession()
+            pass
+        except SessionCreateError as e:
+            log.Error("Failed to connect to node {name}".format(node.getName()))
+
+    log.Info("Successfully established connection with nodes")
+
 
 def main():
     global loop
     global log 
     log	= Logger(Log.DEBUG)
-    load_config()
-    load_sessions()
-
-#   load_modules(modules,config)
-'''	
+    try:
+        load_config()
+    except (ConfigPathError,ConfigError) as e:
+        log.Error("Error in Loading configuration {0} ".format(e))
+        exit(255)
+    except Exception as e:
+        log.Error("Unknown Error in Loading configuration {0} ".format(e))
+    try:
+        load_sessions()
+    except (ConfigPathError,ConfigError) as e:
+        log.Error("Error in connecting to nodes {0} ".format(e))
+        exit(255)
+    except Exception as e:
+        log.Error("Unknown Error in  connecting to nodes {0} ".format(e))
     register_signals() 	
     connection = Connection()
     connection.start_listener()
 
     while loop:
-	connection.connection_handler(config, sessions, modules,ts)
-connection.stop_listener()
-connection.cleanup()
-'''
+        try:
+            connection.connection_handler()
+        except Exception as e:
+            log.Error(e)
+            break
+	
+    connection.stop_listener()
+    connection.cleanup()
+
 if __name__ == '__main__':
     main()

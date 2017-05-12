@@ -65,23 +65,22 @@ class Connection:
     def cleanup(self):
         pass
 
-    def connection_handler(self,config,sessions,objs,ts):
+    def connection_handler(self):
         data = []
 
         string = str()
         self.socket.setblocking(True)
         c, addr = self.socket.accept()
-	t = handler(c,config,sessions,objs)
-	p = Process(target=t.run,args=())
-	print "started the the process"
-	p.start()
+		t = handler(c)
+		p = Process(target=t.run,args=())
+		p.start()
 
 
 class handler(object):
-	def __init__(self, socket,config,sessions,objs):
+	def __init__(self, socket):
 		self.socket = socket
-		self.config = config
-		self.sessions = sessions
+		self.config = Util.getNodesobj()
+		self.nodes = sessions
 		self.objs = objs
 	def run(self):
 		index = 0

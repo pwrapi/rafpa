@@ -85,10 +85,8 @@ class RestObject(object):
     def __init__(self, host, login_account, login_password):
         self.rest_client = rest_client(base_url=host, \
                           username=login_account, password=login_password, \
-                          default_prefix="/rest/v1")
+                          default_prefix="/redfish/v1")
         self.rest_client.login(auth=AuthMethod.SESSION)
-        self.SYSTEMS_RESOURCES = self.ex1_get_resource_directory()
-        self.MESSAGE_REGISTRIES = self.ex2_get_base_registry()
 
     def __del__(self):
         self.rest_client.logout()
@@ -176,39 +174,5 @@ class RestObject(object):
 
         return response
     
-    def ex1_get_resource_directory(self):
-        response = self.rest_get("/rest/v1/resourcedirectory")
-        resources = {}
-    
-        if response.status == 200:
-            resources["resources"] = response.dict["Instances"]
-            return resources
-        else:
-            sys.stderr.write("\tResource directory missing at /rest/v1/resource" \
-                                                                "directory" + "\n")
-    
-    def ex2_get_base_registry(self):
-        response = self.rest_get("/rest/v1/Registries")
-        messages = {}
-        
-        identifier = None
-        
-        for entry in response.dict["Items"]:
-            if "Id" in entry:
-                identifier = entry["Id"]
-            else:
-                identifier = entry["Schema"].split(".")[0]
-    
-            if identifier not in ["Base", "iLO"]:
-                continue
-    
-            for location in entry["Location"]:  
-                reg_resp = self.rest_get(location["Uri"]["extref"])
-    
-                if reg_resp.status == 200:
-                    messages[identifier] = reg_resp.dict["Messages"]
-                else:
-                    sys.stdout.write("\t" + identifier + " not found at "\
-                                                + location["Uri"]["extref"] + "\n")
-    
-        return messages
+
+
