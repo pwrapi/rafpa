@@ -23,7 +23,7 @@ class Connection:
         # Get the port number if not mentioned get the port number from config
         # All initialization for the connection
         
-	try:
+        try:
             self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
             self.socket.settimeout(None)
             self.socket.bind((hostname, port))
@@ -53,7 +53,7 @@ class Connection:
 
             # Set the Error Flag appropriately
             Execs.SocketErrorHandler(ior)
-	    raise IOError	
+            raise IOError
         except Exception as unknown:
             # Set the Error Flag appropriately
             Execs.UnknownException(unknown)
@@ -71,93 +71,85 @@ class Connection:
         string = str()
         self.socket.setblocking(True)
         c, addr = self.socket.accept()
-		t = handler(c)
-		p = Process(target=t.run,args=())
-		p.start()
+        t = handler(c)
+        p = Process(target=t.run,args=())
+        p.start()
 
 
 class handler(object):
-	def __init__(self, socket):
-		self.socket = socket
-		self.config = Util.getNodesobj()
-		self.nodes = sessions
-		self.objs = objs
-	def run(self):
-		index = 0
-		c = self.socket
-		config = self.config
-		sessions = self.sessions
-		objs = self.objs
-	
-		data = str()
-		
-		while True:
-		
-			buffer = c.recv(50)
-			if len(buffer) == 0:
-				return
-			data += buffer.strip()
-			index = data.find(";")
-			if index < 0:
-				next
-			command_str = data[0:index]
-			try:
-				data = data[index+1:]
-			except IndexError as e:
-				data = []
-			index = command_str.find(":")
-			if index < 0:
-				c.send("NO_OP")
-			
-			command = command_str[:index]
-			if command == "get":
-				value = self.get(config, sessions, objs, command_str[index+1:])
-				c.send(str(value))
-				
-			elif command == "put":
-				value = put(config, command_str[inex+1:])
-				c.send(str(value))
-				
-			else:
-				c.send("NO_OP")
-		
-		return
+    def __init__(self, socket):
+        self.socket = socket
 
-	def get(self,config, sessions, objs,string):
-		entity,redfish_host,device_name,attr = string.split(":")
-#print entity, device_name,attr
-	 	handle_name = Util.gethandler(config,entity, device_name,attr)
-	        	
-		if handle_name == None:
-			return -1
-		try:	
-			handler = objs[handle_name]
-		except KeyError as k:
-			print k
-			return -1	
-		try:
-                        value = handler.get(entity, redfish_host, device_name, attr)
+    def run(self):
+        index = 0
+        c = self.socket
+        data = str()
+        
+        while True:
+        
+            buffer = c.recv(50)
+            if len(buffer) == 0:
+                return
+            data += buffer.strip()
+            index = data.find(";")
+            if index < 0:
+                next
 
-#print value
-		except Exception as e:
-			print e	
-			return -1	
-		return value
-	
+            try:
+                command_str = data[0:index]
+                data = data[index+1:]
+            except IndexError as e:
+                data = []
+            index = command_str.find(":")
+            if index < 0:
+                c.send("NO_OP")
+            
+            command = command_str[:index]
+            if command == "get":
+                value = self.get(command_str[index+1:])
+                c.send(str(value))
+                
+            elif command == "put":
+                value = self.put( command_str[index+1:] )
+                c.send(str(value))
+                
+            else:
+                c.send("NO_OP")
+        
+        return
 
-	def put(self, config, objs,string):
-	
-		entity,redfish_host,device_name,attr,command = string.split(":")
-		handle_name = Util.gethandler(entity, device_name)
-		if handle_name == None:
-			return -1
-		try:
-			handler = objs[handle_name]
-		except KeyError as k:
-			return -1
-		try:	
-			status = handler.put(entity, redfish_host, device_name, attr,command)
-		except Exception as e:
-			return -1
-		return status
-	
+    def get(self,config, sessions, objs,string):
+        entity,redfish_host,device_name,attr = string.split(":")
+        handle_name = Util.gethandler()
+                
+        if handle_name == None:
+            return -1
+        try:    
+            handler = objs[handle_name]
+        except KeyError as k:
+            print k
+            return -1    
+        try:
+            value = handler.get(session)
+        except Exception as e:
+            print e    
+            return -1    
+        return value
+    
+
+    def put(self, config, objs,string):
+    
+        entity,redfish_host,device_name,attr,command = string.split(":")
+        handle_name = Util.gethandler(entity, device_name)
+        if handle_name == None:
+            return -1
+        try:
+            handler = objs[handle_name]
+        except KeyError as k:
+            return -1
+        try:    
+            status = handler.put(entity, redfish_host, device_name, attr,command)
+        except Exception as e:
+            return -1
+        return status
+    

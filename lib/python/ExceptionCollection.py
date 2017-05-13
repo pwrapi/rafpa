@@ -15,6 +15,10 @@ class InvalidLogLevel(agentException):
 	message = "Invalid Log Level"
 class ConfigPathError(agentException):
 	message = "Config path error"
+class ScriptsPathError(agentException):
+	message = "Scripts path Error"
+class AgentRootPathError(agentException):
+	message = "Config path missing"
 class ConfigError(agentException):
 	message = "config error"
 class ConfigFileError(agentException):
@@ -35,5 +39,7 @@ class ScriptMissing(agentException):
 	message = "Missing script for the attribute"
 class SessionCreateError(agentException):
 	message ="Error in creating session"
+class SessionExpired(agentException):
+	message = " Session Expired "
 class ModuleImportError(agentException):
 	message = " Error in importing module"

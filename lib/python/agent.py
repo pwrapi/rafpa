@@ -8,6 +8,7 @@ from ExceptionCollection import ConfigError, ConfigPathError, SessionCreateError
 
 
 
+
 log = None
 
 loop = 1
@@ -29,15 +30,33 @@ def load_config():
     # CONFIG_PATH from Environment
 
     config_path = Util.get_config_path()
-    dconfig = Util.LoadConfiguration(config_path)
+    Util.LoadConfiguration(config_path)
     log.Info("Successfully Loaded Configuration database")
+    sys.path.insert(0, Util.get_scripts_path())
+
+    # Get all server_types
+    configobj = Util.getConfigObj()
+    server_types_names = configobj.keys()
+    for a_type_name in server_types_names:
+        log.Info("Handling {0}".format(a_type_name))
+        a_type_devices = configobj[a_type_name]
+        for device_name in a_type_devices.keys():
+            device = a_type_devices[device_name]
+            attr_names = device.keys()
+            for attr_name in attr_names:
+                log.Info("Handling \"{0}\" device \"{1}\" attribute \"{2}\"".format(a_type_name,device_name, attr_name))
+                attr = device[attr_name]
+                attr.load(device)
 
 def load_sessions():
 
     config_path = Util.get_config_path()
     Util.LoadSessions(config_path)
     nodenames = Util.getNodeNames()
-    for node in iter(Util.getNodesobj().values()):
+    nodesobj = Util.getNodesobj()
+    for nodename in nodenames:
+        log.Info("Connecting to node {0}".format(nodename))
+        node = nodesobj[nodename]
         try:
             #node.createSession()
             pass
@@ -58,6 +77,8 @@ def main():
         exit(255)
     except Exception as e:
         log.Error("Unknown Error in Loading configuration {0} ".format(e))
+        exit(255)
+
     try:
         load_sessions()
     except (ConfigPathError,ConfigError) as e:
@@ -65,8 +86,11 @@ def main():
         exit(255)
     except Exception as e:
         log.Error("Unknown Error in  connecting to nodes {0} ".format(e))
-    register_signals() 	
+        exit(255)
+    register_signals()
+
     connection = Connection()
+
     connection.start_listener()
 
     while loop:
