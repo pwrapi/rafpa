@@ -7,8 +7,6 @@ from Log import Logger,Log
 from ExceptionCollection import ConfigError, ConfigPathError, SessionCreateError
 
 
-
-
 log = None
 
 loop = 1
@@ -31,7 +29,7 @@ def load_config():
 
     config_path = Util.get_config_path()
     Util.LoadConfiguration(config_path)
-    log.Info("Successfully Loaded Configuration database")
+    log.Info("Successfully Loaded Configuration database ..")
     sys.path.insert(0, Util.get_scripts_path())
 
     # Get all server_types
@@ -88,9 +86,7 @@ def main():
         log.Error("Unknown Error in  connecting to nodes {0} ".format(e))
         exit(255)
     register_signals()
-
     connection = Connection()
-
     connection.start_listener()
 
     while loop:
@@ -101,7 +97,7 @@ def main():
             break
 	
     connection.stop_listener()
-    connection.cleanup()
+    del connection
 
 if __name__ == '__main__':
     main()

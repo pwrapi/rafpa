@@ -1,11 +1,16 @@
 #!/usr/bin/python
 
-import Util
+from progress.bar import IncrementalBar as Bar
 
-confdir="/root/PowerAPI/PowerAPI-Redfish/config"
-if __name__ == '__main__':
-	Util.LoadSessions(confdir)
-	print Util.nodesobj
-	n = Util.nodesobj['node3']
-	print n.session.expired
-	n.createSession()
+# Progress Bar
+p = Bar(max=100)
+p.start()
+p.message = "Looking for device config path".encode('utf-8')
+
+for x in range(1,100):
+    p.next()
+
+
+
+
+

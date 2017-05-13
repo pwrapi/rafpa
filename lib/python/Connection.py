@@ -6,6 +6,9 @@ import Util
 import ExceptionCollection as Execs
 from time import sleep
 from random import randint
+
+from Log import Logger
+log = Logger()
 '''
 This Module handles system specific Socket handling functions
 '''
@@ -35,6 +38,9 @@ class Connection:
             # Set the Error Flag appropriately
             Connection.SOCKET_UNKNOWN_ERROR = True
         return
+    def __del__(self):
+        log.Info("Closing the connection..")
+        self.socket.close()
 
     def daemonize(self):
         pass
