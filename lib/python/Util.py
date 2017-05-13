@@ -1,176 +1,147 @@
 #this class has all the common functions required to interface with the other modules
 
 import sys
-from Config.RedfishReadConfig import config
-from Session.Sessions import sessions
+import os
+from ExceptionCollection import SessionCreateError,deviceConfigReadError, \
+    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError
+from Config import config
+from Devices import Devices
+from Nodes import Nodes
+from Log import Logger
+
+log = Logger()
+
+configobj = dict()
+nodesobj = dict()
+
+
+from _restobject import RestObject
+
+
+def LoadConfiguration(configdir):
+    readDeviceConfigDir(configdir)
+
+def LoadSessions(configdir):
+    readNodeConfigDir(configdir)
+
+def readDeviceConfigDir(configdir,device_dir="devices"):
+    global configobj
+    device_dir = os.path.join(configdir,device_dir)
+    conf_files = list()
+
+    try:
+        conf_files = os.listdir(device_dir)
+    except OSError as e:
+        raise ConfigPathError
+
+    for conffile in conf_files:
+        full_path = os.path.join(device_dir,conffile)
+        if os.path.isfile(full_path) and isyaml(full_path):
+            entity = conffile.partition(".")[0]
+            configobj[entity] = Devices(conffile,device_dir)
+
+def readNodeConfigDir(configdir,nodes_dir="location"):
+    global nodesobj
+    nodes_dir = os.path.join(configdir,nodes_dir)
+    conf_files = list()
+
+    try:
+        conf_files = os.listdir(nodes_dir)
+    except OSError as e:
+        raise ConfigPathError
+
+    for conffile in conf_files:
+        full_path = os.path.join(nodes_dir,conffile)
+        if os.path.isfile(full_path) and isyaml(full_path):
+            nodes = Nodes(conffile,nodes_dir)
+            nodesobj.update(nodes)
 
 
 
-iloip = ""
-username = ""
-password = ""
-nodelist = []
-sessionsdict = {}
-scriptnames = []
-value = ""
-scriptobjdict = {}
-"""
-def __init__(self,entity,object,attribute,action,iloname):
+def isyaml(conffile):
+    prefix,sep,suffix = conffile.partition(".")
+    if suffix == "yaml":
+        # It is a YAML file
+        return True
+    return False
 
-        self.entity = entity
-        self.iloname = iloname
-        self.object = object
-        self.attribute = attribute
-        self.action = action
-    
-def __init__(self):
-        pass
-"""    
+def getConfigObj():
+    global configobj
+    return configobj
 
-def initialiseSession(configobj):
-	global sessionsdict
-        try:
-            sessionsobj = sessions()
-	    sessionsdict = getSession(sessionsobj,configobj)
-            return sessionsobj
-        except Exception as e:
-            raise e
-
-    
-def getSession(sessionsobj,configobj):
-	global sessionsdict
-        try:
-            
-            nodelist = getNodeNames(configobj)
-            for node in nodelist:
-#print node
-                iloip = getILoConfigurations(configobj,node,"iloIP")
-		username = getILoConfigurations(configobj,node,"username")
-		password = getILoConfigurations(configobj,node,"password")
-#print iloip,username,password,node
-                sessionsdict = sessionsobj.createSession(iloip,username,password,node)
-#print sessionsdict
-            return sessionsdict
-                      
-        except Exception as e:
-            raise e
+def getNodesobj():
+    global nodesobj
+    return nodesobj
 
 
-def initialiseConfiguration():
-	global configobj
-        try:
-            configobj = config()
-#print type(configobj)
-            #configobj = config(self.entity,self.object,self.attribute,self.action,self.iloname)
-            return configobj           
-        except Exception as e:
-            print "Could not initialise Configuration" , e
+def getNodeNames():
+    return getNodesobj().keys()
+
+def redfish_server_login(host, username, password):
+    return createSession(host,username,password)
+
+def createSession(host,username,password):
+    REST_OBJ = getRestObject(host,username,password)
+    return REST_OBJ
 
 
-def getILoConfigurations(configobj,node,input):
-        try:
-            ilovalue = configobj.ReadILODetails(input,node)
-#username = configobj.ReadILODetails("username",node)
-#password = configobj.ReadILODetails("password",node)
-#print iloip , username , password	
-            return ilovalue   
-        except Exception as e:
-            raise e
+def getRestObject(host,username,password):
+    account,password = None,None
+    if host == "localhost" :
+        https_url = "blobstore://."
+        account = "None"
+        password = "None"
+    else:
+        https_url = "https://"+ host
+        account = username
+        password = password
+
+    restobj = RestObject(https_url, account, password)
+    return restobj
+
+def load_module(mod_name, device, attribute):
+    try:
+        log.Info("Importing module {0}".format(mod_name))
+        mod = __import__(mod_name)
+        log.Debug("Module {0}  imported ".format(mod_name))
+        Object_hash = eval("mod."+mod_name)
+        Object = Object_hash(device, attribute)
+        log.Info(mod_name+" loaded successfully")
+    except (ImportError, AttributeError,KeyError,TypeError) as e:
+        log.Error("Loading module {module} was unsuccesssful {exc}".format(module=mod_name,exc=e))
+        raise ModuleImportError
+    except Exception as e:
+        log.Error("Loading module {module} was unsuccesssful {exc}".format(module=mod_name, exc=e))
+        raise ModuleImportError
+    else:
+        return Object
+
+def get_config_path():
+
+    config_path = os.path.join(get_redfish_agent_root_path(), "config")
+    if config_path == None or os.path.isdir(config_path) == False:
+        log.Error("config directory not.")
+        raise ConfigPathError
+    else:
+        return config_path
+
+def get_scripts_path():
+
+    config_path = os.path.join(get_redfish_agent_root_path(), "scripts")
+    if config_path == None or os.path.isdir(config_path) == False:
+        log.Error("scripts directory not found.")
+        raise ScriptsPathError
+    else:
+        return config_path
+
+def get_redfish_agent_root_path():
+    agent_path = os.environ.get('REDFISH_AGENT_ROOT')
+    if agent_path == None or os.path.isdir(agent_path) == False:
+        log.Error("Environment varaible REDFISH_AGENT_ROOT is not set.")
+        raise AgentRootPathError
+    else:
+        return agent_path
 
 
-def getRedfishConfigurations(configobj,input,entity,obj,attribute):
-        try:
-            value = configobj.get_config_data(input,entity,obj,attribute)
-            return value
-        except Exception as e:
-            raise e
 
 
-def getNodeNames(configobj):
-	
-        try:
-            nodenames = configobj.ReadNode()
-            nodelist = nodenames.split(",")
-            #print self.nodelist
-            return nodelist
-        except Exception as e:
-            raise e
-
-          
-def getallScripts(configobj):
-        try:
-            names = configobj.ReadGlobalConfig("scriptnames")
-            scriptnames = names.split(",")
-            return scriptnames
-        except Exception as e:
-            raise e
-"""
-def initializeAllScripts(self,utilobj,configobj):
-        try:
-        
-            for script in self.scriptnames:
-                print script
-                s = "from scripts."+ script +" import "+ script
-                s               
-                scriptobj = +script+(utilobj,configobj)
-                scriptobjdict[script] = scriptobj
-            return scriptobjdict 
-        except Exception as e:
-            return e
-"""
-
-def get(configobj,node):
-        try:
-#getValue = getRedfishConfigurations(configobj,"get",entity,obj,attribute)
-#getURL = getRedfishConfigurations(configobj,"URL",entity,obj,attribute)
-            for key in sessionsdict:
-                if key == node:
-                    REST_OBJ = sessionsdict[key]
-#response = REST_OBJ.rest_get(getURL)
-#if getValue not in response.dict:
-#"No Value found"
-#else:
-#return str(response.dict[getValue])
-                    return REST_OBJ
-            
-        except Exception as e:
-            raise e
-
-
-def set(self):
-        try:
-            print("test")
-        except Exception as e:
-            raise e
-
-        
-def gethandler(configobj,entity,obj,attribute):
-	try:
-	    
-	    getHandler = getRedfishConfigurations(configobj,"script",entity,obj,attribute)
-	    
-	    return getHandler
-	except Exception as e:
-	    raise e
-
-def getRedfishValue(configobj,input,entity,obj,attribute):
-        try:
-	   getValue = getRedfishConfigurations(configobj,input,entity,obj,attribute)
-	   return getValue
-	except Exception as e:
-           raise e
-
-def getRedfishURL(configobj,input,entity,obj,attribute):
-        try:
-	   getURL = getRedfishConfigurations(configobj,input,entity,obj,attribute)
-	   return getURL
-        except Exception as e:
-           raise e
-
-def get_module_path(configobj):
-        try:
-           getPath = configobj.ReadGlobalConfig("location")
-           return getPath
-        except Exception as e:
-           raise e
-           	   
