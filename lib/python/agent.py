@@ -56,10 +56,11 @@ def load_sessions():
         log.Info("Connecting to node {0}".format(nodename))
         node = nodesobj[nodename]
         try:
-            #node.createSession()
-            pass
+            node.createSession()
         except SessionCreateError as e:
-            log.Error("Failed to connect to node {name}".format(node.getName()))
+            log.Error("Failed to connect to node {name}".format(name=node.getName()))
+        except Exception as e:
+            log.Error(e)
 
     log.Info("Successfully established connection with nodes")
 
@@ -79,7 +80,7 @@ def main():
 
     try:
         load_sessions()
-    except (ConfigPathError,ConfigError) as e:
+    except (ConfigPathError,ConfigError,SessionCreateError) as e:
         log.Error("Error in connecting to nodes {0} ".format(e))
         exit(255)
     except Exception as e:

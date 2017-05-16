@@ -86,17 +86,17 @@ def createSession(host,username,password):
 
 
 def getRestObject(host,username,password):
-    account,password = None,None
+    Account,Password = None,None
     if host == "localhost" :
         https_url = "blobstore://."
-        account = "None"
-        password = "None"
+        Account = "None"
+        Password = "None"
     else:
         https_url = "https://"+ host
-        account = username
-        password = password
+        Account = username
+        Password = password
 
-    restobj = RestObject(https_url, account, password)
+    restobj = RestObject(https_url, Account, Password)
     return restobj
 
 def load_module(mod_name, device, attribute):
