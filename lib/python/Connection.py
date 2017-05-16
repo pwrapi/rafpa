@@ -124,38 +124,46 @@ class handler(object):
         
         return
 
-    def get(self,config, sessions, objs,string):
+    def get(self, string):
         entity,redfish_host,device_name,attr = string.split(":")
-        handle_name = Util.gethandler()
-                
-        if handle_name == None:
-            return -1
-        try:    
-            handler = objs[handle_name]
-        except KeyError as k:
-            print k
-            return -1    
-        try:
-            value = handler.get(session)
+
+    try:
+        if entity == None || redfish_host == None || \
+                    device_name == None || attr == None:
+                    log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
+                    raise ValueGetError    
+            handler = Util.gethandler(entity, device_name, attr)
         except Exception as e:
-            print e    
+        log.Error("Error getting handler for {0} {1} {2}".format(entity,device_name,attr)
+                return -1
+     
+                
+        try:
+            value = handler.get(session,entity, device_name, attr)
+        except Exception as e:
+            log.Error("Error getting value from handler for {0} {1} {2} {3} ".format(type(handler),entity,device_name,attr)
             return -1    
         return value
     
 
-    def put(self, config, objs,string):
-    
+    def put(self,string):
         entity,redfish_host,device_name,attr,command = string.split(":")
-        handle_name = Util.gethandler(entity, device_name)
-        if handle_name == None:
-            return -1
-        try:
-            handler = objs[handle_name]
-        except KeyError as k:
-            return -1
-        try:    
-            status = handler.put(entity, redfish_host, device_name, attr,command)
+
+    try:
+        if entity == None || redfish_host == None || \
+                    device_name == None || attr == None || command == None:
+                    log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
+                    raise ValueGetError    
+            handler = Util.gethandler(entity, device_name, attr)
         except Exception as e:
-            return -1
+        log.Error("Error getting handler for {0} {1} {2}".format(entity,device_name,attr)
+                return -1
+     
+                
+        try:
+            status = handler.put(session,entity, device_name, attr, command)
+        except Exception as e:
+            log.Error("Error doing {0}  from handler for {1} {2} {3} {4} ".format(action,type(handler),entity,device_name,attr)
+            return -1    
         return status
     
