@@ -10,10 +10,7 @@ import Util
 class Ilo_CPU_Freq(generic):
 
     
-    def __init__(self,configobj):
-	generic.__init__(self,configobj)
-        self.configobj = configobj
-	#pass
+
     def get(self,entity=None,node=None,obj=None,attribute=None):
         try:
 	    URL = Util.getRedfishURL(self.configobj,"URL",entity,obj,attribute)

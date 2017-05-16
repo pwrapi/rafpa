@@ -23,6 +23,8 @@ class ConfigError(agentException):
 	message = "config error"
 class ConfigFileError(agentException):
 	message = "Config File Errr"
+class AttrGetError(agentException):
+    message = "Error getting attribute from database"
 class HostNameMissing(agentException):
 	message = "Host name is missing in configuration file"
 class UserNameMissing(agentException):
@@ -41,5 +43,12 @@ class SessionCreateError(agentException):
 	message ="Error in creating session"
 class SessionExpired(agentException):
 	message = " Session Expired "
+class SessionGetError(agentException):
+    message = "Error in getting Session info"
 class ModuleImportError(agentException):
 	message = " Error in importing module"
+class ValueGetError(agentException):
+	message = " Error in getting Value from device"
+
+class SocketError(agentException):
+    message = "Error in creating the socket"

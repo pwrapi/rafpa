@@ -11,10 +11,7 @@ log = Logger()
 
 class Ilo_Chassis_Avg_Power(generic):
 
-    
-    def __init__(self,device, attribute):
-	log.Debug("Inside the script") 
-	pass
+
     def get(self,entity=None,node=None,obj=None,attribute=None):
 	    return 1.0
  

@@ -3,7 +3,7 @@ import sys
 import socket
 from multiprocessing import Process, Queue
 import Util
-import ExceptionCollection as Execs
+from ExceptionCollection import ValueGetError,SocketError
 from time import sleep
 from random import randint
 
@@ -56,13 +56,13 @@ class Connection:
             self.socket.listen(num_conn)
             # add a watcher here also whenever socket connection expires of the entries . This should be renewed
         except IOError as ior:
-
             # Set the Error Flag appropriately
-            Execs.SocketErrorHandler(ior)
-            raise IOError
+            log.Error("Error in creating the Socket {0}".format(ior))
+            raise SocketError
         except Exception as unknown:
             # Set the Error Flag appropriately
-            Execs.UnknownException(unknown)
+            log.Error("Unknown Error while creating the socket {0}".format(unknown))
+            raise SocketError
 
         return
 
@@ -127,21 +127,24 @@ class handler(object):
     def get(self, string):
         entity,redfish_host,device_name,attr = string.split(":")
 
-    try:
-        if entity == None || redfish_host == None || \
-                    device_name == None || attr == None:
-                    log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
-                    raise ValueGetError    
+        try:
+            if entity == None or redfish_host == None or \
+                device_name == None or attr == None:
+                log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
+                raise ValueGetError    
             handler = Util.gethandler(entity, device_name, attr)
         except Exception as e:
-        log.Error("Error getting handler for {0} {1} {2}".format(entity,device_name,attr)
-                return -1
-     
-                
+            log.Error("Error getting handler for {ent} {device} {attr_name}".format(ent=entity,device=device_name,attr_name=attr))
+            return -1
+        try:
+            session = Util.getsession(redfish_host)
+        except Exception as e:
+            log.Error("Error getting session for node {0}".format(redfish_host))
+            return -1
         try:
             value = handler.get(session,entity, device_name, attr)
         except Exception as e:
-            log.Error("Error getting value from handler for {0} {1} {2} {3} ".format(type(handler),entity,device_name,attr)
+            log.Error("Error getting value from handler for {0} {1} {2} {3} ".format(type(handler),entity,device_name,attr))
             return -1    
         return value
     
@@ -149,21 +152,24 @@ class handler(object):
     def put(self,string):
         entity,redfish_host,device_name,attr,command = string.split(":")
 
-    try:
-        if entity == None || redfish_host == None || \
-                    device_name == None || attr == None || command == None:
-                    log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
-                    raise ValueGetError    
+        try:
+            if entity == None or redfish_host == None or \
+                    device_name == None or attr == None or command == None:
+                log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
+                raise ValueGetError    
             handler = Util.gethandler(entity, device_name, attr)
         except Exception as e:
-        log.Error("Error getting handler for {0} {1} {2}".format(entity,device_name,attr)
-                return -1
-     
-                
+            log.Error("Error getting handler for {0} {1} {2}".format(entity,device_name,attr))
+            return -1
+        try:
+            session = Util.getsession(redfish_host)
+        except Exception as e:
+            log.Error("Error getting session for node {0}".format(redfish_host))
+            return -1
         try:
             status = handler.put(session,entity, device_name, attr, command)
         except Exception as e:
-            log.Error("Error doing {0}  from handler for {1} {2} {3} {4} ".format(action,type(handler),entity,device_name,attr)
+            log.Error("Error doing {0}  from handler for {1} {2} {3} {4} ".format(command,type(handler),entity,device_name,attr))
             return -1    
         return status
     

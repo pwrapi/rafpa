@@ -9,11 +9,6 @@ import Util
 
 class Ilo_Chassis_Min_Power(generic):
 
-    
-    def __init__(self,configobj):
-	generic.__init__(self,configobj)
-        self.configobj = configobj
-	#pass
     def get(self,entity=None,node=None,obj=None,attribute=None):
         try:
 	    URL = Util.getRedfishURL(self.configobj,"URL",entity,obj,attribute)

@@ -11,11 +11,7 @@ CPUName=""
 
 class Ilo_CPU_Temperature(generic):
 
-    
-    def __init__(self,configobj):
-	generic.__init__(self,configobj)
-        self.configobj = configobj
-	#pass
+
     def get(self,entity,node,obj,attribute):
         try:
 #obj="CPU1"

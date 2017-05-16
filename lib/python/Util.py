@@ -3,7 +3,7 @@
 import sys
 import os
 from ExceptionCollection import SessionCreateError,deviceConfigReadError, \
-    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError
+    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError
 from Config import config
 from Devices import Devices
 from Nodes import Nodes
@@ -143,5 +143,16 @@ def get_redfish_agent_root_path():
         return agent_path
 
 
-
+def gethandler(entity, device, attr):
+    try:
+        return getConfigObj()[entity][device][attr]
+    except KeyError as e:
+        log.Error("Error getting attribute from {0} {1} {2}".format(entity,device,attr))
+        raise AttrGetError
+def getsession(host):
+    try:
+        return nodesobj[host]
+    except KeyError as e:
+        log.Error("Error getting node information for host {hostname}".format(hostname=host))
+        raise SessionGetError
 

@@ -2,5 +2,5 @@
 SCRIPT_PATH=$(dirname $0)
 ROOT=$SCRIPT_PATH/..
 
-export PYTHONPATH=${ROOT}/lib/python:${ROOT}/lib/python/Config:${ROOT}/lib/python/Session
-python ${ROOT}/lib/python/agent/agent.py
+export PYTHONPATH=${ROOT}/lib/python
+python ${ROOT}/lib/python/agent.py
