@@ -125,9 +125,10 @@ class handler(object):
         return
 
     def get(self, string):
-        entity,redfish_host,device_name,attr = string.split(":")
+        entity,redfish_host,device_name,attr = None,None,None,None			
 
         try:
+            entity,redfish_host,device_name,attr = string.split(":")
             if entity == None or redfish_host == None or \
                 device_name == None or attr == None:
                 log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
@@ -150,9 +151,10 @@ class handler(object):
     
 
     def put(self,string):
-        entity,redfish_host,device_name,attr,command = string.split(":")
+        entity,redfish_host,device_name,attr,command = None,None,None,None,None		
 
         try:
+            entity,redfish_host,device_name,attr,command = string.split(":")
             if entity == None or redfish_host == None or \
                     device_name == None or attr == None or command == None:
                 log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 

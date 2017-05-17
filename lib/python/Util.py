@@ -145,7 +145,7 @@ def get_redfish_agent_root_path():
 
 def gethandler(entity, device, attr):
     try:
-        return getConfigObj()[entity][device][attr]
+        return getConfigObj()[entity][device][attr].getmodobj()
     except KeyError as e:
         log.Error("Error getting attribute from {0} {1} {2}".format(entity,device,attr))
         raise AttrGetError

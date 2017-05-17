@@ -76,10 +76,12 @@ class Attribute(object):
     def load(self,device):
         mod_name = self.getScript().partition(".")[0]
         try:
-            Util.load_module(mod_name,device, self)
+            mod_obj = Util.load_module(mod_name,device, self)
             self.setValid(True)
         except ModuleImportError as e:
             log.Error("Loading module \"{modname}\" for device \"{dev}\" and attribute \"{attr}\" was \
 unsuccessful".format(modname=mod_name, dev=device.getName(),attr=self.getName()))
 
             self.setValid(False)
+    def getmodobj(self):
+        return self.mod_obj
