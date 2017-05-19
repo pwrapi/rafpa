@@ -57,7 +57,10 @@ class Node(object):
 		while retries < 3:	
 			try:
 				log.Info("Connecting to server {host} with {user} try {tries}".format(host=self.hostname, user=self.username,tries=retries))
-				session = Util.redfish_server_login(self.hostname,self.username,self.password)
+				if self.hostname =="localhost" :
+				    session = Util.redfish_server_login(self.hostname,self.username,self.password)
+	                        else :
+				    session = Util.sushy_server_login(self.hostname,self.username,self.password)
 			except Exception as e:
 				log.Error(e)
 				retries += 1
@@ -76,7 +79,7 @@ class Node(object):
 			
 		
 	def getSession(self):
-		return self.session.get()
+		return self.session
 
 	def isActive(self):
 		return self.active
@@ -97,7 +100,7 @@ class Session():
 		# Mark Session as expired
 		pass
 
-	def get():
+	def get(self):
 		if self.expired:
 			raise SessionExpired
 		else:

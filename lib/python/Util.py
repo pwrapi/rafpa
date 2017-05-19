@@ -16,6 +16,7 @@ nodesobj = dict()
 
 
 from _restobject import RestObject
+import sushy
 
 
 def LoadConfiguration(configdir):
@@ -84,6 +85,12 @@ def createSession(host,username,password):
     REST_OBJ = getRestObject(host,username,password)
     return REST_OBJ
 
+def sushy_server_login(host, username , password):
+    return createSushySession(host, username ,password)
+
+def createSushySession(host , username , password):
+    SUSHY_OBJ = getSushyObject(host ,username,password)
+    return SUSHY_OBJ	
 
 def getRestObject(host,username,password):
     Account,Password = None,None
@@ -98,6 +105,14 @@ def getRestObject(host,username,password):
 
     restobj = RestObject(https_url, Account, Password)
     return restobj
+def getSushyObject(host,username,password):
+    Account,Password = None,None
+    https_url = "https://"+ host
+    Account = username
+    Password = password
+    sushyobj = sushy.Sushy(https_url , Account, Password,verify=False)
+    return sushyobj	
+    	
 
 def load_module(mod_name, device, attribute):
     try:
@@ -149,7 +164,7 @@ def gethandler(entity, device, attr):
     except KeyError as e:
         log.Error("Error getting attribute from {0} {1} {2}".format(entity,device,attr))
         raise AttrGetError
-def getsession(host):
+def getNode(host):
     try:
         return nodesobj[host]
     except KeyError as e:
