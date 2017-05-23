@@ -30,38 +30,40 @@ for nodename in nodenames:
 	
 node = Util.getNode("node0")
 sushyobj1 = node.getSession().get()
-'''
+
 node = Util.getNode("node2")
 sushyobj2 = node.getSession().get()
 
 node = Util.getNode("node3")
 sushyobj3 = node.getSession().get()
-'''
+
 
 value1 = sushyobj1.get(URL)
-json_data = json.loads(value1.text)
+json_data1 = json.loads(value1.text)
 
-if Param not in json_data:
+if Param not in json_data1:
     print "no"
 else:
-    b = json_data[Param]
+    b = json_data1[Param]
     print b
 
-'''    
-value2 = sushyobj2.get_system(URL)
-if Param not in value2.json:
+    
+value2 = sushyobj2.get(URL)
+json_data2 = json.loads(value2.text)	
+if Param not in json_data2:
     print "no"
 else:
-    b = value2.json[Param]
+    b = json_data2[Param]
     print b
 
-value3 = sushyobj3.get_system(URL)
-if Param not in value3.json:
+value3 = sushyobj3.get(URL)
+json_data3 = json.loads(value3.text)	
+if Param not in json_data3:
     print "no"
 else:
-    b = value3.json[Param]
+    b = json_data3[Param]
     print b
-'''
+
 
 
     
