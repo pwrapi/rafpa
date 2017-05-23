@@ -135,11 +135,14 @@ class handler(object):
                 raise ValueGetError    
             handler = Util.gethandler(entity, device_name, attr)
         except Exception as e:
+            log.Error(e) 
             log.Error("Error getting handler for {ent} {device} {attr_name}".format(ent=entity,device=device_name,attr_name=attr))
             return -1
         try:
-            session = Util.getsession(redfish_host)
+            node = Util.getNode(redfish_host)
+            session = node.getSession().get()
         except Exception as e:
+            log.Error(e)
             log.Error("Error getting session for node {0}".format(redfish_host))
             return -1
         try:
