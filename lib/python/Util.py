@@ -59,7 +59,7 @@ def readNodeConfigDir(configdir,nodes_dir="location"):
 
 
 def isyaml(conffile):
-    prefix,sep,suffix = conffile.partition(".")
+    suffix = conffile[-4:]
     if suffix == "yaml":
         # It is a YAML file
         return True
