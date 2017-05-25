@@ -15,7 +15,7 @@ configobj = dict()
 nodesobj = dict()
 
 
-from _restobject import RestObject
+from ilorestobject import RestObject
 import sushy
 
 
@@ -86,10 +86,10 @@ def createSession(host,username,password):
     return REST_OBJ
 
 def sushy_server_login(host, username , password):
-    return createSushySession(host, username ,password)
+    return createSushySession(host,username,password)
 
 def createSushySession(host , username , password):
-    SUSHY_OBJ = getSushyObject(host ,username,password)
+    SUSHY_OBJ = getSushyObject(host,username,password)
     return SUSHY_OBJ	
 
 def getRestObject(host,username,password):
@@ -103,14 +103,14 @@ def getRestObject(host,username,password):
         Account = username
         Password = password
 
-    restobj = RestObject(https_url, Account, Password)
+    restobj = RestObject(https_url,Account,Password)
     return restobj
 def getSushyObject(host,username,password):
     Account,Password = None,None
     https_url = "https://"+ host
     Account = username
     Password = password
-    sushyobj = sushy.Sushy(https_url , Account, Password,verify=False)
+    sushyobj = sushy.connector.Connector(https_url,Account,Password,verify=False)
     return sushyobj	
     	
 
