@@ -1,0 +1,94 @@
+<1?t.cab0.board0-daemonxml version="1.0"?>
+
+<System>
+
+<Plugins>
+    <plugin name="redfish_plugin" lib="libredfish_dev"/>
+</Plugins>
+
+<Devices>
+    <device name="ilo-node1" plugin="redfish_plugin" initString="ilo4:localhost:8080:node1"/>
+    <device name="ilo-node2" plugin="redfish_plugin" initString="ilo4:localhost:8080:node2"/>
+    <device name="ilo-node3" plugin="redfish_plugin" initString="ilo4:localhost:8080:node3"/>
+</Devices>
+
+<Locations>
+    <location name="plat.cab0.board0-daemon" type="rpc" config="localhost:15000" />
+</Locations>
+
+<Objects>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="POWER" op="AVG">
+            <src type="child" name="cab0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="cab0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0" type="Cabinet" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="board0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="board0" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0" type="Board" location="plat.cab0.board0-daemon">
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="node1" />
+            <src type="child" name="node2" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="node1" />
+        <child name="node2" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.board0.node1" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-node1" openString="Chassis:AvgPower" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.board0.node2" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-node2" openString="Chassis:AvgPower" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+</Objects>
+</System>

@@ -48,6 +48,7 @@ class Device(ConfigParser):
 class Attribute(object):
     def __init__(self, attr_name):
         self.attr = attr_name
+        self.mod_obj = None
         self.valid = False
     def getName(self):
         return self.attr        
@@ -77,6 +78,7 @@ class Attribute(object):
         mod_name = self.getScript().partition(".")[0]
         try:
             mod_obj = Util.load_module(mod_name,device, self)
+            self.mod_obj = mod_obj
             self.setValid(True)
         except ModuleImportError as e:
             log.Error("Loading module \"{modname}\" for device \"{dev}\" and attribute \"{attr}\" was \

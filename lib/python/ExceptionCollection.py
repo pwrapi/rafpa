@@ -52,3 +52,7 @@ class ValueGetError(agentException):
 
 class SocketError(agentException):
     message = "Error in creating the socket"
+class URLGetError(agentException):
+        message = "Error getting URL from Device"
+class ParamGetError(agentException):
+        message = "Error getting Param from Device"	
