@@ -3,7 +3,7 @@
 import sys
 import os
 from ExceptionCollection import SessionCreateError,deviceConfigReadError, \
-    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError
+    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError,URLGetError,ParamGetError
 from Config import config
 from Devices import Devices
 from Nodes import Nodes
@@ -85,10 +85,10 @@ def createSession(host,username,password):
     REST_OBJ = getRestObject(host,username,password)
     return REST_OBJ
 
-def sushy_server_login(host, username , password):
+def sushy_server_login(host,username,password):
     return createSushySession(host,username,password)
 
-def createSushySession(host , username , password):
+def createSushySession(host,username,password):
     SUSHY_OBJ = getSushyObject(host,username,password)
     return SUSHY_OBJ	
 
@@ -110,7 +110,7 @@ def getSushyObject(host,username,password):
     https_url = "https://"+ host
     Account = username
     Password = password
-    sushyobj = sushy.connector.Connector(https_url,Account,Password,verify=False)
+    sushyobj = sushy.connector.Connector(https_url,Account,Password,verify = False)
     return sushyobj	
     	
 
@@ -171,3 +171,16 @@ def getNode(host):
         log.Error("Error getting node information for host {hostname}".format(hostname=host))
         raise SessionGetError
 
+def getURL(entity,device,attr):
+    try:
+        return getConfigObj()[entity][device][attr].getURL()
+    except KeyError as e:
+        log.Error("Error getting URL from {0} {1} {2}".format(entity,device,attr))
+        raise URLGetError
+
+def getParam(entity,device,attr):
+    try:
+        return getConfigObj()[entity][device][attr].getParam()
+    except KeyError as e:
+        log.Error("Error getting Param from {0} {1} {2}".format(entity,device,attr))
+        raise ParamGetError	    
