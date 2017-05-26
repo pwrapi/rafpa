@@ -152,6 +152,7 @@ int parse(char *string, char **entity, char **host, char **port, char **node) {
 	token_len = strlen(token);
 	*node = malloc(token_len+1);
 	bzero(*node, token_len+1);
+	strncpy(*node, token, token_len);
 	return SUCCESS;
 
 
@@ -206,6 +207,7 @@ static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
     
     DBGP("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
     printf("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
+	printf("entity = %s, node = %s, host = %s, port = %s\n", p->entity, p->node, p->host, p->port);
     if((fd->file_fd = redfish_connect(p)) < 0) {
 	printf("Inside error condition\n");    
 	return (plugin_devops_t *)NULL;
@@ -230,7 +232,7 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 	file_fd = obj->file_fd;
 
 	a = attrNameToString(type);
-	sprintf(string,"get:ilo:%s:%s:%s;", obj->dev->ilo, obj->dev_name, a);
+	sprintf(string,"get:%s:%s:%s:%s;", obj->dev->entity,obj->dev->node, obj->dev_name, a);
 	printf("path to be opened %s\n", string);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
@@ -264,7 +266,7 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 
 	a = attrNameToString(type);
 	strcpy(ptr, "1234");
-	sprintf(string,"set:ilo:%s:%s:%s:%s;", obj->dev->ilo, obj->dev_name, a, ptr);
+	sprintf(string,"set:ilo:%s:%s:%s:%s;", obj->dev->node, obj->dev_name, a, ptr);
 	printf("path to be opened %s\n", string);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
