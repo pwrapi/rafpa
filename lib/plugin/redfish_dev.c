@@ -49,9 +49,10 @@ typedef struct {
 
 typedef struct {
 	/* define our data */
+	char *entity;	
 	char *host;
 	char *port;
-	char *ilo;
+	char *node;
 	int socket_fd;
 } pwr_redfish_dev_t;
 #define PWR_REDFISH_DEV(X) ((pwr_redfish_dev_t *)(X))
@@ -71,11 +72,13 @@ static plugin_devops_t devOps = {
     .write  = redfish_dev_write,
     .readv  = redfish_dev_readv,
     .writev = redfish_dev_writev,
-    //.time   = redfish_dev_time,
-    //.clear  = redfish_dev_clear,
-    //.log_start = redfish_dev_log_start,
-    //.log_stop = redfish_dev_log_stop,
-    //.get_samples = redfish_dev_get_samples,
+/*
+    .time   = redfish_dev_time,
+    .clear  = redfish_dev_clear,
+    .log_start = redfish_dev_log_start,
+    .log_stop = redfish_dev_log_stop,
+    .get_samples = redfish_dev_get_samples,
+*/
 };
 
 
@@ -92,7 +95,7 @@ typedef struct {
 
 static plugin_devops_t* redfish_dev_init( const char *initstr )
 {
-    char *host, *ilo, *port;
+    char *entity, *host, *node, *port;
     static int socket;
  	 	
     plugin_devops_t *dev = malloc( sizeof(devOps) );
@@ -101,23 +104,23 @@ static plugin_devops_t* redfish_dev_init( const char *initstr )
      DBGP("initstr='%s'\n",initstr);
      printf("initstr='%s'\n",initstr);
 
-     if( parse(initstr, &host, &port, &ilo) != 0) {
+     if( parse(initstr, &entity, &host, &port, &node) != 0) {
 	return (plugin_devops_t *)NULL;
      }	
      pwr_redfish_dev_t *p = malloc( sizeof(pwr_redfish_dev_t ) );
      bzero( p, sizeof(pwr_redfish_dev_t) );
+	 p->entity = entity;
      p->host = host;
      p->port = port;
-     p->ilo = ilo;
+     p->node = node;
      dev->private_data = p; 
 	
-    //printf("init %s %s %s\n", host, port, ilo);		
     return dev;
 
 }
 
 
-int parse(char *string, char **host, char **port, char **ilo) {
+int parse(char *string, char **entity, char **host, char **port, char **node) {
 
 	char *token;
 	unsigned long int token_len; 
@@ -125,24 +128,30 @@ int parse(char *string, char **host, char **port, char **ilo) {
 		return ERR_NO;
 	}
 	token_len = strlen(token);
-	*host = malloc(token_len+1);
-	bzero(*host, token_len+1);
-	strncpy(*host, token, token_len);
+	*entity = malloc(token_len+1);
+	bzero(*entity, token_len+1);
+	strncpy(*entity, token, token_len);
 	if ( (token = strtok(NULL,":")) == NULL) {
 		return ERR_NO;
 	}
 	
 	token_len = strlen(token);
-	*port = malloc(token_len+1);
-	bzero(*port,token_len+1);
-	strncpy(*port,token, token_len); 
+	*host = malloc(token_len+1);
+	bzero(*host,token_len+1);
+	strncpy(*host, token, token_len); 
 	if ( (token = strtok(NULL,":")) == NULL) {
 		return ERR_NO;
 	}	
 	token_len = strlen(token);
-	*ilo = malloc(token_len+1);
-	bzero(*ilo,token_len+1);
-	strncpy(*ilo, token, token_len);
+	*port = malloc(token_len+1);
+	bzero(*port, token_len+1);
+	strncpy(*port, token, token_len);
+	if ( (token = strtok(NULL,":")) == NULL) {
+		return ERR_NO;
+	}	
+	token_len = strlen(token);
+	*node = malloc(token_len+1);
+	bzero(*node, token_len+1);
 	return SUCCESS;
 
 
@@ -219,15 +228,10 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 	p = buf;
 	pwr_redfish_fd_t *obj = (pwr_redfish_fd_t *)fd;
 	file_fd = obj->file_fd;
-	/*if ((new_fd = dup(file_fd)) < 0) {
-		printf("Error while duping socket\n");
-		return ERR_NO;
-	}*/
 
 	a = attrNameToString(type);
-	//sprintf(string,"get:ilo:%s:%s:%s;", obj->dev->ilo, obj->dev_name, a);
-	sprintf(string,"get:ilo:%s:Chassis:%s;", obj->dev->ilo, a);
-	//printf("path to be opened %s\n", string);
+	sprintf(string,"get:ilo:%s:%s:%s;", obj->dev->ilo, obj->dev_name, a);
+	printf("path to be opened %s\n", string);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
 		printf("Sending failed\n");
@@ -242,38 +246,6 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 	d = strtod(p,NULL);
 	bcopy(&d, (double *)ptr, sizeof(double)); 
 		
-/*	do {	
-		len = recv(file_fd, p, 20, NULL);
-		//len = recv(file_fd, p, 20, MSG_DONTWAIT);
-		printf("Received\n");
-		if (len == 0)  {
-			break;
-		}
-		else if ((len < 0) && (errno != EAGAIN)) {
-			printf("Read :: Error in receving data\n");
-			perror("recv :");
-			printf("erro mo %d\n", errno);
-			//return ERR_NO;
-			break;	
-		}
-		p = p + len;
-		*(p + 0) = '\0';
-		printf("received data %s\n", (p-len));
-		size = size + len;
-	} while((len > 0) && (size <= 20));
-	*(p + 0) = '\0';
-	if (size == 0) {
-		printf("No data\n");
-		return ERR_NO;
-       }
-	p = p - size;
-	d = strtod(p,NULL);
-	bcopy(&d, (double *)ptr, sizeof(double)); 
-        printf("Data after receivning %lf\n", d);
-	*(double*)ptr = d;
-	if (ts) {
-		*ts = now;
-	} */ 
 	return PWR_RET_SUCCESS;
 	
 }
@@ -289,10 +261,6 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 	
 	pwr_redfish_fd_t *obj = (pwr_redfish_fd_t *)fd;
 	file_fd = obj->file_fd;
-	/*if ((new_fd = dup(file_fd)) < 0) {
-		printf("Error while duping socket\n");
-		return ERR_NO;
-	}*/
 
 	a = attrNameToString(type);
 	strcpy(ptr, "1234");
@@ -305,8 +273,6 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 	}
 
 	printf("path opened\n");
-	//strcpy(buf, "123");
-	//if ((send(file_fd, buf, strlen(buf), NULL)) < 0) {
 	if ((recv(file_fd, buf, 10, NULL)) < 0) {
 		printf("Error while receiving\n");
 		perror("recv :");
