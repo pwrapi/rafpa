@@ -202,8 +202,9 @@ static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
     bzero( fd, sizeof(pwr_redfish_fd_t) );	
     	
     pwr_redfish_dev_t *p = (pwr_redfish_dev_t *) ops->private_data;
-    fd->dev = p;
-    fd->dev_name = openstr;		
+    PWR_REDFISH_FD(fd)->dev = p;
+	PWR_REDFISH_FD(fd)->dev_name = (char *) malloc(strlen(openstr)+1);
+	strcpy(PWR_REDFISH_FD(fd)->dev_name, openstr);
     
     DBGP("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
     printf("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
@@ -219,20 +220,23 @@ static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
 
 static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int length, PWR_Time* ts )
 {
-	int file_fd;
 	int ret = 0, len =0, size = 0;
 	char string[200];
 	char buf[200], *p ,*a;
 	double d, now;
 	struct timeval tv;
 	
+	char *entity = PWR_REDFISH_FD(fd)->dev->entity;
+	char *node = PWR_REDFISH_FD(fd)->dev->node;
+	char *dev_name = PWR_REDFISH_FD(fd)->dev_name;
+	int file_fd = PWR_REDFISH_FD(fd)->file_fd;
+	
 	now = getTimeSec();
 	p = buf;
-	pwr_redfish_fd_t *obj = (pwr_redfish_fd_t *)fd;
-	file_fd = obj->file_fd;
+	//pwr_redfish_fd_t *obj = (pwr_redfish_fd_t *)fd;
 
 	a = attrNameToString(type);
-	sprintf(string,"get:%s:%s:%s:%s;", obj->dev->entity,obj->dev->node, obj->dev_name, a);
+	sprintf(string,"get:%s:%s:%s:%s;", entity, node, dev_name, a);
 	printf("path to be opened %s\n", string);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
