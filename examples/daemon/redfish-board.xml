@@ -1,9 +1,9 @@
-<1?t.cab0.board0-daemonxml version="1.0"?>
+<?xml version="1.0"?>
 
 <System>
 
 <Plugins>
-    <plugin name="redfish_plugin" lib="libredfish_dev"/>
+    <plugin name="redfish_plugin" lib="libpwr_redfishdev"/>
 </Plugins>
 
 <Devices>
@@ -12,9 +12,6 @@
     <device name="ilo-node3" plugin="redfish_plugin" initString="ilo4:localhost:8080:node3"/>
 </Devices>
 
-<Locations>
-    <location name="plat.cab0.board0-daemon" type="rpc" config="localhost:15000" />
-</Locations>
 
 <Objects>
 
@@ -46,7 +43,7 @@
 
 </obj >
 
-<obj name="plat.cab0.board0" type="Board" location="plat.cab0.board0-daemon">
+<obj name="plat.cab0.board0" type="Board" > 
 
     <attributes>
         <attr name="POWER" op="AVG" >
