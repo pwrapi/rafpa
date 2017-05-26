@@ -1,4 +1,4 @@
-Chassis:
+chassis:
     AvgPower:
         URL: /redfish/v1/Chassis/1/Power/FastPowerMeter
         get: Average
@@ -15,7 +15,7 @@ Chassis:
         URL: /redfish/v1/Chassis/1/Power
         get: PowerConsumedWatts
         script: Ilo_Chassis_Power
-CPU:
+cpu:
     Voltage:
         URL: /redfish/v1/Systems/1/Processors/1/
         get: VoltageVoltsX10
@@ -28,7 +28,7 @@ CPU:
         URL: /redfish/v1/Systems/1/Processors/1/
         get: MaxSpeedMHz
         script: Ilo_CPU_Freq
-Memory:
+memory:
     Voltage:
         URL: /redfish/v1/Systems/1/Memory/proc1dimm8
         get: MinimumVoltageVoltsX10
