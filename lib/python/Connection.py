@@ -133,7 +133,10 @@ class handler(object):
                 device_name == None or attr == None:
                 log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
                 raise ValueGetError    
-            handler = Util.gethandler(entity, device_name, attr)
+            query_device = device_name.rsplit(".")[-1]
+            query_device = query_device.split('#')[0]
+
+            handler = Util.gethandler(entity, query_device, attr)
         except Exception as e:
             log.Error(e) 
             log.Error("Error getting handler for {ent} {device} {attr_name}".format(ent=entity,device=device_name,attr_name=attr))

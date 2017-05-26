@@ -62,7 +62,7 @@
 <obj name="plat.cab0.chassis1.node1" type="Node" >
 
     <devices>
-        <dev name="system_pow_dev" device="ilo-node1" openString="chassis1.system1" /> 
+        <dev name="system_pow_dev" device="ilo-node1" openString="chassis#1" /> 
     </devices>
 
     <attributes>
@@ -76,7 +76,7 @@
 <obj name="plat.cab0.chassis1.node2" type="Node" >
 
     <devices>
-        <dev name="system_pow_dev" device="ilo-node2" openString="chassis1.system2" /> 
+        <dev name="system_pow_dev" device="ilo-node2" openString="chassis#1" /> 
     </devices>
 
     <attributes>
