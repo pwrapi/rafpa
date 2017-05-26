@@ -3,6 +3,7 @@ import os
 import Util
 import ExceptionCollection
 from Log import Logger,Log
+import json
 
 log = Logger()
 
@@ -16,9 +17,14 @@ class generic(object):
         return self.device
     def getAttribute(self):
         return self.attribute
-
-
-	
+    def getValue(self,session,URL):
+        try:
+            value = session.get(URL)
+	except Exception as e:
+	    log.Error("Error getting value for the session object")
+            return -1
+        return value	    
+	    
 
 	
  

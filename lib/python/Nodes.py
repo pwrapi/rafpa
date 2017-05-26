@@ -57,13 +57,14 @@ class Node(object):
         while retries < 3:    
             try:
                 log.Info("Connecting to server {host} with {user} try {tries}".format(host=self.hostname, user=self.username,tries=retries))
-                '''
+                
 		if self.hostname =="localhost" :
                     session = Util.redfish_server_login(self.hostname,self.username,self.password)
                 else :
                     session = Util.sushy_server_login(self.hostname,self.username,self.password)
 	        '''
 		session = Util.sushy_server_login(self.hostname,self.username,self.password)
+	        '''
             except Exception as e:
                 log.Error(e)
                 retries += 1

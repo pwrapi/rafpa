@@ -14,18 +14,18 @@ class Ilo_Chassis_Avg_Power(generic):
 
     def get(self,session=None,entity=None,obj=None,attribute=None):
 	 URL=Util.getURL(entity,obj,attribute)
-	 print URL
-         Param=Util.getParam(entity,obj,attribute)
-         print Param	
-	 value1 = session.get(URL)
-	 json_data1 = json.loads(value1.text)
-         
-	 if Param not in json_data1:
-	     return 1.0
-	 else:
-	     b = json_data1[Param]
-             return b
+	 Param=Util.getParam(entity,obj,attribute)
+         value = generic.getValue(self,session,URL)
+	 json_data = json.loads(value.text)
+	
+         try:
+             AttrValue = json_data[Param]
+	 except Exception as e:
+             log.Error("Error in finding Get Parameter in the Response")		   
+	     return -1
 
+	 return AttrValue    
+         
  
 
     

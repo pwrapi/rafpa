@@ -63,11 +63,11 @@ class RestObject(object):
                                    self.MESSAGE_REGISTRIES[err_mesg][err_entry]\
                                    ["Description"]))
 
-    def rest_get(self, suburi):
+    def get(self, suburi):
         """REST GET"""
         return self.rest_client.get(path=suburi)
 
-    def rest_patch(self, suburi, request_body, optionalpassword=None):
+    def patch(self, suburi, request_body, optionalpassword=None):
         """REST PATCH"""
         sys.stdout.write("PATCH " + str(request_body) + " to " + suburi + "\n")
         response = self.rest_client.patch(path=suburi, body=request_body, \
@@ -76,7 +76,7 @@ class RestObject(object):
 
         return response
 
-    def rest_put(self, suburi, request_body, optionalpassword=None):
+    def put(self, suburi, request_body, optionalpassword=None):
         """REST PUT"""
         sys.stdout.write("PUT " + str(request_body) + " to " + suburi + "\n")
         response = self.rest_client.put(path=suburi, body=request_body, \
@@ -86,7 +86,7 @@ class RestObject(object):
         return response
 
 
-    def rest_post(self, suburi, request_body):
+    def post(self, suburi, request_body):
         """REST POST"""
         sys.stdout.write("POST " + str(request_body) + " to " + suburi + "\n")
         response = self.rest_client.post(path=suburi, body=request_body)
@@ -95,7 +95,7 @@ class RestObject(object):
         return response
 
 
-    def rest_delete(self, suburi):
+    def delete(self, suburi):
         """REST DELETE"""
         sys.stdout.write("DELETE " + suburi + "\n")
         response = self.rest_client.delete(path=suburi)
