@@ -5,54 +5,61 @@ import os
 from generic import generic
 import Util
 import re
+from ExceptionCollection import ParamInResponseGetError
 Proc_str=""
 ProcDimm = ""
 alist = []
+from Log import Logger,Log
+log = Logger(Log.DEBUG)
+import string
+import json
 #sys.path.append("/root/home/vinanti/redfishagent")
 
 class Ilo_Memory_Temperature(generic):
 
-    def get(self,entity=None,node=None,obj=None,attribute=None):
-        try:
+    def get(self,session=None,entity=None,obj=None,attribute=None):
+        
 #obj="proc1.dimm8"
-	   obj = obj.split(".")
+	   dev = obj.replace("#","") 
+	   dev = dev.split(".")
 	   r = re.compile("([a-zA-Z]+)([0-9]+)")
-	   d = dict([r.match(string).groups() for string in obj])
+	   d = dict([r.match(string).groups() for string in dev])
 
-           Proc_Str = "P{0}".format(d["proc"])   
+           Proc_Str = "P{0}".format(d["cpu"])   
            ProcDimm = Proc_Str + " DIMM"
    
-	   URL = Util.getRedfishURL(self.configobj,"URL",entity,"Memory",attribute)
-	       
-           redfishValue = Util.getRedfishValue(self.configobj,"get",entity,"Memory",attribute)
-           Rest_OBJ = Util.get(self.configobj,node)
-           response = Rest_OBJ.rest_get(URL)
-	   for key in response.dict['Temperatures']:
-	       if ProcDimm in key['Name']:
-	           alist.append(key['Name'])
+	   URL=Util.getURL(entity,obj,attribute)
+	   Param=Util.getParam(entity,obj,attribute)
+	   value = generic.getValue(self,session,URL)
+	   json_data = json.loads(value.text)
+	   try:
+	       for key in json_data['Temperatures']:
+	           if ProcDimm in key['Name']:
+	               alist.append(key['Name'])
 
-	       for x in alist:
+	           for x in alist:
 
-	           dimm = x
-		   if Proc_str in dimm:
-		       index = dimm.find('DIMM')
-		       if index < 0:
-		           return -1
-		       dimm_range = dimm[index+5:]
-	               low,high= dimm_range.split("-")
-	               low = int(low)
-                       high = int(high)
+	               dimm = x
+		       if Proc_str in dimm:
+		           index = dimm.find('DIMM')
+		           
+		           dimm_range = dimm[index+5:]
+	                   low,high= dimm_range.split("-")
+	                   low = int(low)
+                           high = int(high)
 
-                       if low <= int(d["dimm"]) <= high:
-	                   if key['Name'] == x:
-                               print (key[redfishValue])
-			       break
-	               else:
-                           continue                  
-			   return -1
+                           if low <= int(d["memory"]) <= high:
+	                       if key['Name'] == x:
+                                   return key[Param]
+			           break        
+                           				   
+	                   else:
+                               continue                  
+			       
 	   
-        except Exception as e:
-            raise e
+           except Exception as e:
+               log.Error("Error in finding Get Parameter in the Response")
+	       raise ParamInResponseGetError
  
 
     
