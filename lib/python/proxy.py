@@ -68,7 +68,7 @@ def load_sessions():
 def main():
     global loop
     global log 
-    log	= Logger(Log.ERROR)
+    log	= Logger(Log.DEBUG)
     try:
         load_config()
     except (ConfigPathError,ConfigError) as e:

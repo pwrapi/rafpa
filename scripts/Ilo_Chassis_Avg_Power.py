@@ -5,6 +5,7 @@ import os
 from generic import generic
 import Util
 from Log import Logger
+from ExceptionCollection import ParamInResponseGetError
 import json
 log = Logger()
 #sys.path.append("/root/home/vinanti/redfishagent")
@@ -22,7 +23,7 @@ class Ilo_Chassis_Avg_Power(generic):
              AttrValue = json_data[Param]
 	 except Exception as e:
              log.Error("Error in finding Get Parameter in the Response")		   
-	     return -1
+	     raise ParamInResponseGetError
 
 	 return AttrValue    
          

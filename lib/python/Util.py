@@ -3,11 +3,12 @@
 import sys
 import os
 from ExceptionCollection import SessionCreateError,deviceConfigReadError, \
-    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError,URLGetError,ParamGetError
+    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError,URLGetError,ParamGetError,DynamicURLCreateError
 from Config import config
 from Devices import Devices
 from Nodes import Nodes
 from Log import Logger
+import string
 
 log = Logger()
 
@@ -173,14 +174,38 @@ def getNode(host):
 
 def getURL(entity,device,attr):
     try:
-        return getConfigObj()[entity][device][attr].getURL()
+	
+	query_device = device.rsplit(".")[-1]
+	query_device = query_device.split('#')[0]   
+        dynURL = getConfigObj()[entity][query_device][attr].getURL()
+        return createDynamicURL(device,dynURL)
+	
     except KeyError as e:
         log.Error("Error getting URL from {0} {1} {2}".format(entity,device,attr))
         raise URLGetError
 
 def getParam(entity,device,attr):
     try:
-        return getConfigObj()[entity][device][attr].getParam()
+	query_device = device.rsplit(".")[-1]
+	query_device = query_device.split('#')[0]   
+        return getConfigObj()[entity][query_device][attr].getParam()
     except KeyError as e:
         log.Error("Error getting Param from {0} {1} {2}".format(entity,device,attr))
-        raise ParamGetError	    
+        raise ParamGetError
+def createDynamicURL(device,URL):
+    try:
+        devices = device.split(".")
+        newlist=[]
+        for devs in devices:
+            newlist.append(devs.split("#"))
+        devDic = dict(newlist)
+        newURL=''
+        for key in devDic:
+            if key in URL:
+                replacestring = "{" + key + "}"
+                newURL = string.replace(URL,replacestring,devDic[key])
+                URL = newURL
+	return URL
+    except KeyError as e:
+        log.Error("Error creating dynamic URL from {0} {1}".format(device,URL))
+        raise DynamicURLCreateError	

@@ -55,4 +55,8 @@ class SocketError(agentException):
 class URLGetError(agentException):
         message = "Error getting URL from Device"
 class ParamGetError(agentException):
-        message = "Error getting Param from Device"	
+        message = "Error getting Param from Device"
+class DynamicURLCreateError(agentException):
+        message = "Error creating dynamic url for the Device"
+class ParamInResponseGetError(agentException):
+        message = "Error getting the param in the response"	

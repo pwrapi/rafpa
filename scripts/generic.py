@@ -3,6 +3,7 @@ import os
 import Util
 import ExceptionCollection
 from Log import Logger,Log
+from ExceptionCollection import ValueGetError
 import json
 
 log = Logger()
@@ -22,7 +23,7 @@ class generic(object):
             value = session.get(URL)
 	except Exception as e:
 	    log.Error("Error getting value for the session object")
-            return -1
+            raise ValueGetError
         return value	    
 	    
 
