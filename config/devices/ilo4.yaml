@@ -41,5 +41,15 @@ memory:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         get: MaximumFrequencyMHz
         script: Ilo_Memory_Frequency
+docker:
+    Power:
+        URL: /redfish/v1/Chassis/{chassis}U/Power
+        get: PowerConsumedWatts
+        script: Ilo_Docker_Power
+
+
+
+
+
 
 

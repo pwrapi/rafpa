@@ -108,7 +108,10 @@ def getRestObject(host,username,password):
     return restobj
 def getSushyObject(host,username,password):
     Account,Password = None,None
-    https_url = "https://"+ host
+    if username == "None" :	
+        https_url = "http://"+ host
+    else:
+        https_url = "https://"+ host
     Account = username
     Password = password
     sushyobj = sushy.connector.Connector(https_url,Account,Password,verify = False)
