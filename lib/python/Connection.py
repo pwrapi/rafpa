@@ -125,8 +125,7 @@ class handler(object):
         return
 
     def get(self, string):
-        entity,redfish_host,device_name,attr = None,None,None,None			
-
+        entity,redfish_host,device_name,attr = None,None,None,None
         try:
             entity,redfish_host,device_name,attr = string.split(":")
             if entity == None or redfish_host == None or \
@@ -150,6 +149,7 @@ class handler(object):
             return -1
         try:
             value = handler.get(session,entity, device_name, attr)
+#print "----------------------"+value+"------------------\n";
         except Exception as e:
             log.Error("Error getting value from handler for {0} {1} {2} {3} ".format(type(handler),entity,device_name,attr))
             return -1    

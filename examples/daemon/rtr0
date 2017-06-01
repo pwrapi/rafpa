@@ -1,8 +1,7 @@
 #!/bin/sh
 
 
-export POWERAPI_DEBUG=15
-
+export POWERAPI_DEBUG=0
 
 pwrdaemon \
 --rtr.clientPort=15000 \

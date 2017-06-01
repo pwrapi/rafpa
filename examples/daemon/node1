@@ -1,6 +1,6 @@
 #!/bin/sh
 
-export POWERAPI_DEBUG=15
+export POWERAPI_DEBUG=0
 
 CONFIG=/root/daemon/dummySystem.xml
 
@@ -8,4 +8,4 @@ pwrdaemon \
 --srvr.rtrHost=localhost \
 --srvr.rtrPort=15001 \
 --srvr.pwrApiConfig=$CONFIG \
---srvr.pwrApiRoot=plat.cab0.board0.node1
+--srvr.pwrApiRoot=plat.cab0.chassis1.docker2
