@@ -3,11 +3,12 @@
 import sys
 import os
 from ExceptionCollection import SessionCreateError,deviceConfigReadError, \
-    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError
+    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError,URLGetError,ParamGetError,DynamicURLCreateError
 from Config import config
 from Devices import Devices
 from Nodes import Nodes
 from Log import Logger
+import string
 
 log = Logger()
 
@@ -15,7 +16,8 @@ configobj = dict()
 nodesobj = dict()
 
 
-from _restobject import RestObject
+from ilorestobject import RestObject
+import sushy
 
 
 def LoadConfiguration(configdir):
@@ -59,7 +61,7 @@ def readNodeConfigDir(configdir,nodes_dir="location"):
 
 
 def isyaml(conffile):
-    prefix,sep,suffix = conffile.partition(".")
+    suffix = conffile[-4:]
     if suffix == "yaml":
         # It is a YAML file
         return True
@@ -84,6 +86,12 @@ def createSession(host,username,password):
     REST_OBJ = getRestObject(host,username,password)
     return REST_OBJ
 
+def sushy_server_login(host,username,password):
+    return createSushySession(host,username,password)
+
+def createSushySession(host,username,password):
+    SUSHY_OBJ = getSushyObject(host,username,password)
+    return SUSHY_OBJ	
 
 def getRestObject(host,username,password):
     Account,Password = None,None
@@ -96,8 +104,19 @@ def getRestObject(host,username,password):
         Account = username
         Password = password
 
-    restobj = RestObject(https_url, Account, Password)
+    restobj = RestObject(https_url,Account,Password)
     return restobj
+def getSushyObject(host,username,password):
+    Account,Password = None,None
+    if username == "None" :	
+        https_url = "http://"+ host
+    else:
+        https_url = "https://"+ host
+    Account = username
+    Password = password
+    sushyobj = sushy.connector.Connector(https_url,Account,Password,verify = False)
+    return sushyobj	
+    	
 
 def load_module(mod_name, device, attribute):
     try:
@@ -149,10 +168,47 @@ def gethandler(entity, device, attr):
     except KeyError as e:
         log.Error("Error getting attribute from {0} {1} {2}".format(entity,device,attr))
         raise AttrGetError
-def getsession(host):
+def getNode(host):
     try:
         return nodesobj[host]
     except KeyError as e:
         log.Error("Error getting node information for host {hostname}".format(hostname=host))
         raise SessionGetError
 
+def getURL(entity,device,attr):
+    try:
+	
+	query_device = device.rsplit(".")[-1]
+	query_device = query_device.split('#')[0]   
+        dynURL = getConfigObj()[entity][query_device][attr].getURL()
+        return createDynamicURL(device,dynURL)
+	
+    except KeyError as e:
+        log.Error("Error getting URL from {0} {1} {2}".format(entity,device,attr))
+        raise URLGetError
+
+def getParam(entity,device,attr):
+    try:
+	query_device = device.rsplit(".")[-1]
+	query_device = query_device.split('#')[0]   
+        return getConfigObj()[entity][query_device][attr].getParam()
+    except KeyError as e:
+        log.Error("Error getting Param from {0} {1} {2}".format(entity,device,attr))
+        raise ParamGetError
+def createDynamicURL(device,URL):
+    try:
+        devices = device.split(".")
+        newlist=[]
+        for devs in devices:
+            newlist.append(devs.split("#"))
+        devDic = dict(newlist)
+        newURL=''
+        for key in devDic:
+            if key in URL:
+                replacestring = "{" + key + "}"
+                newURL = string.replace(URL,replacestring,devDic[key])
+                URL = newURL
+	return URL
+    except KeyError as e:
+        log.Error("Error creating dynamic URL from {0} {1}".format(device,URL))
+        raise DynamicURLCreateError	

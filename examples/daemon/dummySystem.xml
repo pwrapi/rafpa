@@ -1,0 +1,901 @@
+<?xml version="1.0"?>
+
+<System>
+
+<Plugins>
+    <plugin name="redfish_plugin" lib="libpwr_redfishdev"/>
+</Plugins>
+
+<Devices>
+    <device name="ilo-docker1" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker1"/>
+    <device name="ilo-docker2" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker2"/>
+    <device name="ilo-docker3" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker3"/>
+	<device name="ilo-docker4" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker4"/>
+	<device name="ilo-docker5" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker5"/>
+    <device name="ilo-docker6" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker6"/>
+    <device name="ilo-docker7" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker7"/>
+    <device name="ilo-docker8" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker8"/>
+    <device name="ilo-docker9" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker9"/>
+    <device name="ilo-docker10" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker10"/>
+    <device name="ilo-docker11" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker11"/>
+    <device name="ilo-docker12" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker12"/>
+    <device name="ilo-docker13" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker13"/>
+    <device name="ilo-docker14" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker14"/>
+    <device name="ilo-docker15" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker15"/>
+    <device name="ilo-docker16" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker16"/>
+	<device name="ilo-docker17" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker17"/>
+    <device name="ilo-docker18" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker18"/>
+    <device name="ilo-docker19" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker19"/>
+    <device name="ilo-docker20" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker20"/>
+	<device name="ilo-docker21" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker21"/>
+    <device name="ilo-docker22" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker22"/>
+    <device name="ilo-docker23" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker23"/>
+	<device name="ilo-docker24" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker24"/>
+	<device name="ilo-docker25" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker25"/>
+    <device name="ilo-docker26" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker26"/>
+    <device name="ilo-docker27" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker27"/>
+    <device name="ilo-docker28" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker28"/>
+    <device name="ilo-docker29" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker29"/>
+    <device name="ilo-docker30" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker30"/>
+    <device name="ilo-docker31" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker31"/>
+    <device name="ilo-docker32" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker32"/>
+    <device name="ilo-docker33" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker33"/>
+    <device name="ilo-docker34" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker34"/>
+    <device name="ilo-docker35" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker35"/>
+    <device name="ilo-docker36" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker36"/>
+	<device name="ilo-docker37" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker37"/>
+    <device name="ilo-docker38" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker38"/>
+    <device name="ilo-docker39" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker39"/>
+    <device name="ilo-docker40" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker40"/>
+    <device name="ilo-docker41" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker41"/>
+    <device name="ilo-docker42" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker42"/>
+    <device name="ilo-docker43" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker43"/>
+	<device name="ilo-docker44" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker44"/>
+	<device name="ilo-docker45" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker45"/>
+    <device name="ilo-docker46" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker46"/>
+    <device name="ilo-docker47" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker47"/>
+    <device name="ilo-docker48" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker48"/>
+    <device name="ilo-docker49" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker49"/>
+    <device name="ilo-docker50" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker50"/>
+</Devices>
+
+<Locations>
+    <location name="rtr0" type="rpc" config="localhost:15000" />
+</Locations>
+
+<Objects>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="child" name="cab0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="cab0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0" type="Cabinet" >
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="child" name="chassis1" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="chassis1" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.chassis1" type="Chassis" location="rtr0">
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="child" name="docker1" />
+            <src type="child" name="docker2" />
+            <src type="child" name="docker3" />
+            <src type="child" name="docker4" />
+            <src type="child" name="docker5" />
+            <src type="child" name="docker6" />
+            <src type="child" name="docker7" />
+            <src type="child" name="docker8" />
+            <src type="child" name="docker9" />
+            <src type="child" name="docker10" />
+            <src type="child" name="docker11" />
+            <src type="child" name="docker12" />
+            <src type="child" name="docker13" />
+            <src type="child" name="docker14" />
+            <src type="child" name="docker15" />
+            <src type="child" name="docker16" />
+            <src type="child" name="docker17" />
+            <src type="child" name="docker18" />
+            <src type="child" name="docker19" />
+            <src type="child" name="docker20" />
+            <src type="child" name="docker21" />
+            <src type="child" name="docker22" />
+            <src type="child" name="docker23" />
+            <src type="child" name="docker24" />
+            <src type="child" name="docker25" />
+            <src type="child" name="docker26" />
+            <src type="child" name="docker27" />
+            <src type="child" name="docker28" />
+            <src type="child" name="docker29" />
+            <src type="child" name="docker30" />
+            <src type="child" name="docker31" />
+            <src type="child" name="docker32" />
+            <src type="child" name="docker33" />
+            <src type="child" name="docker34" />
+            <src type="child" name="docker35" />
+            <src type="child" name="docker36" />
+            <src type="child" name="docker37" />
+            <src type="child" name="docker38" />
+            <src type="child" name="docker39" />
+            <src type="child" name="docker40" />
+            <src type="child" name="docker41" />
+            <src type="child" name="docker42" />
+            <src type="child" name="docker43" />
+            <src type="child" name="docker44" />
+            <src type="child" name="docker45" />
+            <src type="child" name="docker46" />
+            <src type="child" name="docker47" />
+            <src type="child" name="docker48" />
+            <src type="child" name="docker49" />
+            <src type="child" name="docker50" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="docker1" />
+        <child name="docker2" />
+        <child name="docker3" />
+        <child name="docker4" />
+        <child name="docker5" />
+        <child name="docker6" />
+        <child name="docker7" />
+        <child name="docker8" />
+        <child name="docker9" />
+        <child name="docker10" />
+        <child name="docker11" />
+        <child name="docker12" />
+        <child name="docker13" />
+        <child name="docker14" />
+        <child name="docker15" />
+        <child name="docker16" />
+        <child name="docker17" />
+        <child name="docker18" />
+        <child name="docker19" />
+        <child name="docker20" />
+        <child name="docker21" />
+        <child name="docker22" />
+        <child name="docker23" />
+        <child name="docker24" />
+        <child name="docker25" />
+        <child name="docker26" />
+        <child name="docker27" />
+        <child name="docker28" />
+        <child name="docker29" />
+        <child name="docker30" />
+        <child name="docker31" />
+        <child name="docker32" />
+        <child name="docker33" />
+        <child name="docker34" />
+        <child name="docker35" />
+        <child name="docker36" />
+        <child name="docker37" />
+        <child name="docker38" />
+        <child name="docker39" />
+        <child name="docker40" />
+        <child name="docker41" />
+        <child name="docker42" />
+        <child name="docker43" />
+        <child name="docker44" />
+        <child name="docker45" />
+        <child name="docker46" />
+        <child name="docker47" />
+        <child name="docker48" />
+        <child name="docker49" />
+        <child name="docker50" />
+    </children>
+
+</obj >
+   
+<obj name="plat.cab0.chassis1.docker1" type="Node" >
+
+    <devices>
+        <dev name="dev1" device="ilo-docker1" openString="chassis#1.docker#1" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev1" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker2" type="Node"  >
+
+    <devices>
+        <dev name="dev2" device="ilo-docker2" openString="chassis#1.docker#2" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev2" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker3" type="Node" >
+
+    <devices>
+        <dev name="dev3" device="ilo-docker3" openString="chassis#1.docker#3" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev3" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker4" type="Node"  >
+
+    <devices>
+        <dev name="dev4" device="ilo-docker4" openString="chassis#1.docker#4" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev4" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker5" type="Node" >
+
+    <devices>
+        <dev name="dev5" device="ilo-docker5" openString="chassis#1.docker#5" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev5" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker6" type="Node"  >
+
+    <devices>
+        <dev name="dev6" device="ilo-docker6" openString="chassis#1.docker#6" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev6" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker7" type="Node" >
+
+    <devices>
+        <dev name="dev7" device="ilo-docker7" openString="chassis#1.docker#7" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev7" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker8" type="Node"  >
+
+    <devices>
+        <dev name="dev8" device="ilo-docker8" openString="chassis#1.docker#8" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev8" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis1.docker9" type="Node" >
+
+    <devices>
+        <dev name="dev9" device="ilo-docker9" openString="chassis#1.docker#9" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev9" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker10" type="Node"  >
+
+    <devices>
+        <dev name="dev10" device="ilo-docker10" openString="chassis#1.docker#10" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev10" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker11" type="Node" >
+
+    <devices>
+        <dev name="dev11" device="ilo-docker11" openString="chassis#1.docker#11" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev11" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker12" type="Node"  >
+
+    <devices>
+        <dev name="dev12" device="ilo-docker12" openString="chassis#1.docker#12" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev12" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker13" type="Node" >
+
+    <devices>
+        <dev name="dev13" device="ilo-docker13" openString="chassis#1.docker#13" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev13" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker14" type="Node"  >
+
+    <devices>
+        <dev name="dev14" device="ilo-docker14" openString="chassis#1.docker#14" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev14" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker15" type="Node" >
+
+    <devices>
+        <dev name="dev15" device="ilo-docker15" openString="chassis#1.docker#15" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev15" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker16" type="Node"  >
+
+    <devices>
+        <dev name="dev16" device="ilo-docker16" openString="chassis#1.docker#16" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev16" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis1.docker17" type="Node" >
+
+    <devices>
+        <dev name="dev17" device="ilo-docker17" openString="chassis#1.docker#17" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev17" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker18" type="Node"  >
+
+    <devices>
+        <dev name="dev18" device="ilo-docker18" openString="chassis#1.docker#18" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev18" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker19" type="Node" >
+
+    <devices>
+        <dev name="dev19" device="ilo-docker19" openString="chassis#1.docker#19" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev19" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker20" type="Node"  >
+
+    <devices>
+        <dev name="dev20" device="ilo-docker20" openString="chassis#1.docker#20" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev20" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker21" type="Node" >
+
+    <devices>
+        <dev name="dev21" device="ilo-docker21" openString="chassis#1.docker#21" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev21" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker22" type="Node"  >
+
+    <devices>
+        <dev name="dev22" device="ilo-docker22" openString="chassis#1.docker#22" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev22" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker23" type="Node" >
+
+    <devices>
+        <dev name="dev23" device="ilo-docker23" openString="chassis#1.docker#23" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev23" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker24" type="Node"  >
+
+    <devices>
+        <dev name="dev24" device="ilo-docker24" openString="chassis#1.docker#24" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev24" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker25" type="Node" >
+
+    <devices>
+        <dev name="dev25" device="ilo-docker25" openString="chassis#1.docker#25" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev25" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker26" type="Node"  >
+
+    <devices>
+        <dev name="dev26" device="ilo-docker26" openString="chassis#1.docker#26" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev26" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker27" type="Node" >
+
+    <devices>
+        <dev name="dev27" device="ilo-docker27" openString="chassis#1.docker#27" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev27" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker28" type="Node"  >
+
+    <devices>
+        <dev name="dev28" device="ilo-docker28" openString="chassis#1.docker#28" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev28" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis1.docker29" type="Node" >
+
+    <devices>
+        <dev name="dev29" device="ilo-docker29" openString="chassis#1.docker#29" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev29" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker30" type="Node"  >
+
+    <devices>
+        <dev name="dev30" device="ilo-docker30" openString="chassis#1.docker#30" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev30" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis1.docker31" type="Node" >
+
+    <devices>
+        <dev name="dev31" device="ilo-docker31" openString="chassis#1.docker#31" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev31" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker32" type="Node"  >
+
+    <devices>
+        <dev name="dev32" device="ilo-docker32" openString="chassis#1.docker#32" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev32" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker33" type="Node" >
+
+    <devices>
+        <dev name="dev33" device="ilo-docker33" openString="chassis#1.docker#33" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev33" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker34" type="Node"  >
+
+    <devices>
+        <dev name="dev34" device="ilo-docker34" openString="chassis#1.docker#34" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev34" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker35" type="Node" >
+
+    <devices>
+        <dev name="dev35" device="ilo-docker35" openString="chassis#1.docker#35" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev35" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker36" type="Node"  >
+
+    <devices>
+        <dev name="dev36" device="ilo-docker36" openString="chassis#1.docker#36" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev36" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker37" type="Node" >
+
+    <devices>
+        <dev name="dev37" device="ilo-docker37" openString="chassis#1.docker#37" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev37" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker38" type="Node"  >
+
+    <devices>
+        <dev name="dev38" device="ilo-docker38" openString="chassis#1.docker#38" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev38" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis1.docker39" type="Node" >
+
+    <devices>
+        <dev name="dev39" device="ilo-docker39" openString="chassis#1.docker#39" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev39" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker40" type="Node"  >
+
+    <devices>
+        <dev name="dev40" device="ilo-docker40" openString="chassis#1.docker#40" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev40" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis1.docker41" type="Node" >
+
+    <devices>
+        <dev name="dev41" device="ilo-docker41" openString="chassis#1.docker#41" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev41" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker42" type="Node"  >
+
+    <devices>
+        <dev name="dev42" device="ilo-docker42" openString="chassis#1.docker#42" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev42" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker43" type="Node" >
+
+    <devices>
+        <dev name="dev43" device="ilo-docker43" openString="chassis#1.docker#43" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev43" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker44" type="Node"  >
+
+    <devices>
+        <dev name="dev44" device="ilo-docker44" openString="chassis#1.docker#44" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev44" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker45" type="Node" >
+
+    <devices>
+        <dev name="dev45" device="ilo-docker45" openString="chassis#1.docker#45" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev45" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker46" type="Node"  >
+
+    <devices>
+        <dev name="dev46" device="ilo-docker46" openString="chassis#1.docker#46" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev46" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker47" type="Node" >
+
+    <devices>
+        <dev name="dev47" device="ilo-docker47" openString="chassis#1.docker#47" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev47" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker48" type="Node"  >
+
+    <devices>
+        <dev name="dev48" device="ilo-docker48" openString="chassis#1.docker#48" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev48" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis1.docker49" type="Node" >
+
+    <devices>
+        <dev name="dev49" device="ilo-docker49" openString="chassis#1.docker#49" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM"  >
+            <src type="device" name="dev49" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis1.docker50" type="Node"  >
+
+    <devices>
+        <dev name="dev50" device="ilo-docker50" openString="chassis#1.docker#50" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="SUM" >
+            <src type="device" name="dev50" />
+        </attr>
+    </attributes>
+
+</obj >
+</Objects>
+</System>

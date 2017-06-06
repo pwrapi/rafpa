@@ -1,0 +1,677 @@
+<?xml version="1.0"?>
+
+<System>
+
+<Plugins>
+    <plugin name="redfish_plugin" lib="libpwr_redfishdev"/>
+</Plugins>
+
+<Devices>
+    <device name="ilo-docker1" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker1"/>
+    <device name="ilo-docker2" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker2"/>
+    <device name="ilo-docker3" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker3"/>
+    <device name="ilo-docker4" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker4"/>
+    <device name="ilo-docker5" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker5"/>
+    <device name="ilo-docker6" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker6"/>
+    <device name="ilo-docker7" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker7"/>
+    <device name="ilo-docker8" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker8"/>
+    <device name="ilo-docker9" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker9"/>
+    <device name="ilo-docker10" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker10"/>
+    <device name="ilo-docker11" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker11"/>
+    <device name="ilo-docker12" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker12"/>    
+    <device name="ilo-docker13" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker13"/>
+    <device name="ilo-docker14" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker14"/>
+    <device name="ilo-docker15" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker15"/>
+    <device name="ilo-docker16" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker16"/>
+    <device name="ilo-docker17" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker17"/>
+    <device name="ilo-docker18" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker18"/>
+    <device name="ilo-docker19" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker19"/>
+    <device name="ilo-docker20" plugin="redfish_plugin" initString="ilo4:localhost:8080:docker20"/>	
+</Devices>
+
+<Locations>
+    <location name="daemon-cab0" type="rpc" config="localhost:15000" />
+</Locations>
+
+
+<Objects>
+
+<obj name="plat" type="Platform">
+
+    <attributes>
+        <attr name="POWER" op="AVG">
+            <src type="child" name="cab0" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="cab0" />
+    </children>
+
+</obj>
+
+<obj name="plat.cab0" type="Cabinet" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="chassis1" />
+            <src type="child" name="chassis2" />
+            <src type="child" name="chassis3" />
+            <src type="child" name="chassis4" />
+            <src type="child" name="chassis5" />
+            <src type="child" name="chassis6" />
+            <src type="child" name="chassis7" />
+            <src type="child" name="chassis8" />
+            <src type="child" name="chassis9" />
+            <src type="child" name="chassis10" />
+            <src type="child" name="chassis11" />
+            <src type="child" name="chassis12" />
+            <src type="child" name="chassis13" />
+            <src type="child" name="chassis14" />
+            <src type="child" name="chassis15" />
+            <src type="child" name="chassis16" />
+            <src type="child" name="chassis17" />
+            <src type="child" name="chassis18" />
+            <src type="child" name="chassis19" />
+            <src type="child" name="chassis20" />
+        </attr>
+    </attributes>
+
+    <children>
+        <child name="chassis1" />
+        <child name="chassis2" />		
+        <child name="chassis3" />
+        <child name="chassis4" />
+        <child name="chassis5" />
+        <child name="chassis6" />
+        <child name="chassis7" />
+        <child name="chassis8" />
+        <child name="chassis9" />		
+        <child name="chassis10" />
+        <child name="chassis11" />
+        <child name="chassis12" />		
+        <child name="chassis13" />
+        <child name="chassis14" />
+        <child name="chassis15" />		
+        <child name="chassis16" />
+        <child name="chassis17" />
+        <child name="chassis18" />		
+        <child name="chassis19" />
+        <child name="chassis20" />
+    </children>
+
+</obj >
+
+<obj name="plat.cab0.chassis1" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker1" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker1" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis1.docker1" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker1" openString="chassis#1.docker#1" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis2" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker2" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker2" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis2.docker2" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker2" openString="chassis#1.docker#2" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis3" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker3" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker3" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis3.docker3" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker3" openString="chassis#1.docker#3" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis4" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker4" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker4" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis4.docker4" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker4" openString="chassis#1.docker#4" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis5" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker5" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker5" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis5.docker5" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker5" openString="chassis#1.docker#5" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis6" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker6" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker6" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis6.docker6" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker6" openString="chassis#1.docker#6" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis7" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker7" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker7" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis7.docker7" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker7" openString="chassis#1.docker#7" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis8" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker8" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker8" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis8.docker8" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker8" openString="chassis#1.docker#8" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis9" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker9" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker9" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis9.docker9" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker9" openString="chassis#1.docker#9" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis10" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker10" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker10" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis10.docker10" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker10" openString="chassis#1.docker#10" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis11" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker11" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker11" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis11.docker11" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker11" openString="chassis#1.docker#11" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis12" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker12" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker12" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis12.docker12" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker12" openString="chassis#1.docker#12" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis13" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker13" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker13" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis13.docker13" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker13" openString="chassis#1.docker#13" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis14" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker14" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker14" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis14.docker14" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker14" openString="chassis#1.docker#14" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis15" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker15" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker15" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis15.docker15" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker15" openString="chassis#1.docker#15" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis16" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker16" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker16" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis16.docker16" type="Node" >
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker16" openString="chassis#1.docker#16" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+<obj name="plat.cab0.chassis17" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker17" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker17" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis17.docker17" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker17" openString="chassis#1.docker#17" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis18" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker18" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker18" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis18.docker18" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker18" openString="chassis#1.docker#18" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis19" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker19" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker19" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis19.docker19" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker19" openString="chassis#1.docker#19" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+
+<obj name="plat.cab0.chassis20" type="Chassis" >
+
+    <attributes>
+        <attr name="POWER" op="AVG" >
+            <src type="child" name="docker20" />
+		</attr>
+    </attributes>
+
+    <children>
+        <child name="docker20" />
+    </children>
+
+</obj >
+
+
+<obj name="plat.cab0.chassis20.docker20" type="Node">
+
+    <devices>
+        <dev name="system_pow_dev" device="ilo-docker20" openString="chassis#1.docker#20" /> 
+    </devices>
+
+    <attributes>
+        <attr name="POWER" op="AVG"  >
+            <src type="device" name="system_pow_dev" />
+        </attr>
+    </attributes>
+
+</obj >
+</Objects>
+</System>

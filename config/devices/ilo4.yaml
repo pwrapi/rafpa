@@ -1,45 +1,55 @@
-Chassis:
-    Power:
-        URL: /redfish/v1/Chassis/chassis$/Power
-        get: PowerConsumedWatts
-        script: Ilo_Chassis_Power
+chassis:
     AvgPower:
-        URL: /rest/v1/Chassis/chassis$/Power/FastPowerMeter
+        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
         get: Average
         script: Ilo_Chassis_Avg_Power
     MaxPower:
-        URL: /redfish/v1/Chassis/chassis$/Power/FastPowerMeter/
+        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter/
         get: Maximum
         script: Ilo_Chassis_Max_Power
     MinPower:
-        URL: /redfish/v1/Chassis/chassis$/Power/FastPowerMeter/
+        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter/
         get: Minimum
         script: Ilo_Chassis_Min_Power
-CPU:
+    Power:
+        URL: /redfish/v1/Chassis/{chassis}/Power
+        get: PowerConsumedWatts
+        script: Ilo_Chassis_Power
+cpu:
     Voltage:
-        URL: /redfish/v1/Systems/chassis$/Processors/cpu$/
+        URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
         get: VoltageVoltsX10
         script: Ilo_CPU_Voltage
     Temperature:
-        URL: /redfish/v1/Chassis/chassis$/Thermal/
+        URL: /redfish/v1/Chassis/{chassis}/Thermal/
         get: CurrentReading
-        script: Current_Reading
+        script: Ilo_CPU_Temperature
     Frequency:
-        URL: /redfish/v1/Systems/chassis$/Processors/cpu$/
+        URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
         get: MaxSpeedMHz
         script: Ilo_CPU_Freq
-Memory:
+memory:
     Voltage:
-        URL: /redfish/v1/Systems/system$/Memory/
+        URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         get: MinimumVoltageVoltsX10
         script: Ilo_Memory_Voltage
     Temperature:
-        URL: /redfish/v1/Chassis/system$/Thermal/
+        URL: /redfish/v1/Chassis/{chassis}/Thermal/
         get: CurrentReading
-        script: Current_Reading
+        script: Ilo_Memory_Temperature
     Frequency:
-        URL: /redfish/v1/Systems/system$/Memory/
+        URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         get: MaximumFrequencyMHz
-        script: Ilo_Memory_Freq
+        script: Ilo_Memory_Frequency
+docker:
+    Power:
+        URL: /redfish/v1/Chassis/{chassis}U/Power
+        get: PowerConsumedWatts
+        script: Ilo_Docker_Power
+
+
+
+
+
 
 

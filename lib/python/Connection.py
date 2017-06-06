@@ -125,25 +125,31 @@ class handler(object):
         return
 
     def get(self, string):
-        entity,redfish_host,device_name,attr = None,None,None,None			
-
+        entity,redfish_host,device_name,attr = None,None,None,None
         try:
             entity,redfish_host,device_name,attr = string.split(":")
             if entity == None or redfish_host == None or \
                 device_name == None or attr == None:
                 log.Error("Error in passing one of the data , redfish host, entity, device name or attribute") 
                 raise ValueGetError    
-            handler = Util.gethandler(entity, device_name, attr)
+            query_device = device_name.rsplit(".")[-1]
+            query_device = query_device.split('#')[0]
+
+            handler = Util.gethandler(entity, query_device, attr)
         except Exception as e:
+            log.Error(e) 
             log.Error("Error getting handler for {ent} {device} {attr_name}".format(ent=entity,device=device_name,attr_name=attr))
             return -1
         try:
-            session = Util.getsession(redfish_host)
+            node = Util.getNode(redfish_host)
+            session = node.getSession().get()
         except Exception as e:
+            log.Error(e)
             log.Error("Error getting session for node {0}".format(redfish_host))
             return -1
         try:
             value = handler.get(session,entity, device_name, attr)
+#print "----------------------"+value+"------------------\n";
         except Exception as e:
             log.Error("Error getting value from handler for {0} {1} {2} {3} ".format(type(handler),entity,device_name,attr))
             return -1    

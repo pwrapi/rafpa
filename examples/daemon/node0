@@ -1,18 +1,11 @@
 #!/bin/sh
 
-POWERAPI=/opt/PowerAPI
-POWERAPI_BIN=$POWERAPI/bin
-POWERAPI_LIB=$POWERAPI/lib
+export POWERAPI_DEBUG=0
 
-export POWERAPI_DEBUG=30
-export LD_LIBRARY_PATH="${POWERAPI_LIB}:${LD_LIBRARY_PATH}"
-export DYLD_LIBRARY_PATH="${POWERAPI_LIB}:${DYLD_LIBRARY_PATH}"
-export POWERAPI_CONFIG="/root/PowerAPI_Working_Code/PowerAPI-Redfish/config/daemon_redfish.xml"
-export CONFIG="/root/PowerAPI_Working_Code/PowerAPI-Redfish/config/daemon_redfish.xml"
-export POWERAPI_ROOT="plat.cab0.node0"
-/root/PowerAPI_Working_Code/pwrapi-ref/tools/pwrdaemon/./pwrdaemon \
---srvr.rtrHost=192.168.2.92 \
+CONFIG=/root/daemon/dummySystem.xml
+
+pwrdaemon \
+--srvr.rtrHost=localhost \
 --srvr.rtrPort=15001 \
---srvr.pwrApiConfig=$POWERAPI_CONFIG \
---srvr.pwrApiRoot=plat.cab0.node0
-
+--srvr.pwrApiConfig=$CONFIG \
+--srvr.pwrApiRoot=plat.cab0.chassis1.docker1
