@@ -102,7 +102,7 @@ static plugin_devops_t* redfish_dev_init( const char *initstr )
     *dev = devOps;
      
      DBGP("initstr='%s'\n",initstr);
-     printf("initstr='%s'\n",initstr);
+     //printf("initstr='%s'\n",initstr);
 
      if( parse(initstr, &entity, &host, &port, &node) != 0) {
 	return (plugin_devops_t *)NULL;
@@ -168,7 +168,7 @@ int redfish_connect(pwr_redfish_dev_t *p)
 	int enable = 1;
 	res = malloc(sizeof(struct addrinfo));
 	bzero(res, sizeof(struct addrinfo));
-	printf("host = %s, port = %s\n", p->host, p->port); 
+	//printf("host = %s, port = %s\n", p->host, p->port); 
 	if( (k = getaddrinfo(p->host, p->port, NULL, &res)) != 0) {
 		perror("error:");
 		return ERR_NO;
@@ -186,7 +186,7 @@ int redfish_connect(pwr_redfish_dev_t *p)
    	}
 	setsockopt( sockfd, SOL_TCP, TCP_NODELAY, (char *) &enable, sizeof(int) );
 	p->socket_fd = sockfd;
-	printf("sckfd =%d \n", sockfd);
+	//printf("sckfd =%d \n", sockfd);
 	//return SUCCESS;
 	return sockfd;
 }
@@ -207,10 +207,10 @@ static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
 	strcpy(PWR_REDFISH_FD(fd)->dev_name, openstr);
     
     DBGP("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
-    printf("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
-	printf("entity = %s, node = %s, host = %s, port = %s\n", p->entity, p->node, p->host, p->port);
+    //printf("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
+	//printf("entity = %s, node = %s, host = %s, port = %s\n", p->entity, p->node, p->host, p->port);
     if((fd->file_fd = redfish_connect(p)) < 0) {
-	printf("Inside error condition\n");    
+	//printf("Inside error condition\n");    
 	return (plugin_devops_t *)NULL;
     }
     return fd;
@@ -237,15 +237,15 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 
 	a = attrNameToString(type);
 	sprintf(string,"get:%s:%s:%s:%s;", entity, node, dev_name, a);
-	printf("path to be opened %s\n", string);
+	//printf("path to be opened %s\n", string);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
-		printf("Sending failed\n");
+		//printf("Sending failed\n");
 		return ERR_NO;
 	}
 
 	if ((recv(file_fd, p, 20, NULL)) < 0) {
-		printf("Error while reading\n");
+		//printf("Error while reading\n");
 		perror("recv :");
 		return ERR_NO;
 	}
@@ -271,20 +271,20 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 	a = attrNameToString(type);
 	strcpy(ptr, "1234");
 	sprintf(string,"set:ilo:%s:%s:%s:%s;", obj->dev->node, obj->dev_name, a, ptr);
-	printf("path to be opened %s\n", string);
+	//printf("path to be opened %s\n", string);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
-		printf("Sending failed\n");
+		//printf("Sending failed\n");
 		return ERR_NO;
 	}
 
-	printf("path opened\n");
+	//printf("path opened\n");
 	if ((recv(file_fd, buf, 10, NULL)) < 0) {
-		printf("Error while receiving\n");
+		//printf("Error while receiving\n");
 		perror("recv :");
 		return ERR_NO;
 	}
-        printf("Setting value done %s\n", buf);
+        //printf("Setting value done %s\n", buf);
 
 	return PWR_RET_SUCCESS;
 }
