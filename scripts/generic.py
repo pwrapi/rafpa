@@ -3,7 +3,7 @@ import os
 import Util
 import ExceptionCollection
 from Log import Logger,Log
-from ExceptionCollection import ValueGetError
+from ExceptionCollection import ValueGetError,ValueSetError
 import json
 
 log = Logger()
@@ -24,11 +24,23 @@ class generic(object):
 	except Exception as e:
 	    log.Error("Error getting value for the session object")
             raise ValueGetError
-        return value	    
-	    
-
-	
- 
+        return value
+    
+    def setValue(self,session,URL,data):
+        try:
+            value = session.patch(URL,data)
+	except Exception as e:
+	    log.Error("Error setting value for the session object")
+            raise ValueSetError
+        return value
+		 
+    def postValue(self,session,URL,data):
+        try:
+            value = session.post(URL,data)
+	except Exception as e:
+	    log.Error("Error setting value for the session object")
+            raise ValueSetError
+        return value
 
     
        

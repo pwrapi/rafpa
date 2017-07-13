@@ -20,7 +20,7 @@ cpu:
         URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
         get: VoltageVoltsX10
         script: Ilo_CPU_Voltage
-    Temperature:
+    Temp:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         get: CurrentReading
         script: Ilo_CPU_Temperature
@@ -33,7 +33,7 @@ memory:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         get: MinimumVoltageVoltsX10
         script: Ilo_Memory_Voltage
-    Temperature:
+    Temp:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         get: CurrentReading
         script: Ilo_Memory_Temperature
@@ -46,9 +46,23 @@ docker:
         URL: /redfish/v1/Chassis/{chassis}U/Power
         get: PowerConsumedWatts
         script: Ilo_Docker_Power
-
-
-
+system:
+    CState:
+        URL: /redfish/v1/Systems/{system}/bios/Settings
+        get: MinProcIdlePower
+        script: Ilo_System_CState
+    Reset:
+        URL: /redfish/v1/Systems/{system}/
+        get: ResetType
+        script: Ilo_System_Reset
+    PowerProfile:
+        URL: /redfish/v1/Systems/{system}/bios/Settings
+        get: PowerProfile
+        script: Ilo_System_PowerProfile
+    CPackageState:
+        URL: /redfish/v1/Systems/{system}/bios/Settings
+        get: MinProcIdlePkgState
+        script: Ilo_System_CPackageState
 
 
 
