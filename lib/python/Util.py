@@ -175,23 +175,29 @@ def getNode(host):
         log.Error("Error getting node information for host {hostname}".format(hostname=host))
         raise SessionGetError
 
-def getURL(entity,device,attr):
+def getURL(entity,device,attr,op):
     try:
-	
-	query_device = device.rsplit(".")[-1]
-	query_device = query_device.split('#')[0]   
-        dynURL = getConfigObj()[entity][query_device][attr].getURL()
+        query_device = device.rsplit(".")[-1]
+        query_device = query_device.split('#')[0]
+        if (op == "get"):
+            dynURL = getConfigObj()[entity][query_device][attr].getGetURL() 
+        else:
+            dynURL = getConfigObj()[entity][query_device][attr].getSetURL()
+
         return createDynamicURL(device,dynURL)
 	
     except KeyError as e:
         log.Error("Error getting URL from {0} {1} {2}".format(entity,device,attr))
         raise URLGetError
 
-def getParam(entity,device,attr):
+def getParam(entity,device,attr,op):
     try:
-	query_device = device.rsplit(".")[-1]
-	query_device = query_device.split('#')[0]   
-        return getConfigObj()[entity][query_device][attr].getParam()
+        query_device = device.rsplit(".")[-1]
+        query_device = query_device.split('#')[0]
+        if (op == "get"):	 	
+            return getConfigObj()[entity][query_device][attr].getGetParam()
+        else:
+            return getConfigObj()[entity][query_device][attr].getSetParam()				
     except KeyError as e:
         log.Error("Error getting Param from {0} {1} {2}".format(entity,device,attr))
         raise ParamGetError

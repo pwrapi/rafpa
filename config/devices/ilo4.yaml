@@ -1,55 +1,86 @@
 chassis:
     AvgPower:
+      get:
         URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
-        get: Average
-        script: Ilo_Chassis_Avg_Power
+        attribute: Average
+        script: Ilo_Generic
     MaxPower:
-        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter/
-        get: Maximum
-        script: Ilo_Chassis_Max_Power
+      get:
+        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
+        attribute: Maximum
+        script: Ilo_Generic
     MinPower:
-        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter/
-        get: Minimum
-        script: Ilo_Chassis_Min_Power
+      get:
+        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
+        attribute: Minimum
+        script: Ilo_Generic
     Power:
-        URL: /redfish/v1/Chassis/{chassis}/Power
-        get: PowerConsumedWatts
-        script: Ilo_Chassis_Power
+      get:
+        URL: /redfish/v1/Chassis/{chassis}/Power/
+        attribute: PowerConsumedWatts
+        script: Ilo_Generic
 cpu:
     Voltage:
-        URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
-        get: VoltageVoltsX10
+      get:
+        URL: /redfish/v1/Systems/{system}/Processors/{cpu}
+        attribute: VoltageVoltsX10
         script: Ilo_CPU_Voltage
-    Temperature:
+    Temp:
+      get:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
-        get: CurrentReading
+        attribute: CurrentReading
         script: Ilo_CPU_Temperature
     Frequency:
+      get:
         URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
-        get: MaxSpeedMHz
-        script: Ilo_CPU_Freq
+        attribute: MaxSpeedMHz
+        script: Ilo_Generic
 memory:
     Voltage:
+      get:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
-        get: MinimumVoltageVoltsX10
-        script: Ilo_Memory_Voltage
-    Temperature:
+        attribute: MinimumVoltageVoltsX10
+        script: Ilo_Generic
+    Temp:
+      get:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
-        get: CurrentReading
+        attribute: CurrentReading
         script: Ilo_Memory_Temperature
     Frequency:
+      get:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
-        get: MaximumFrequencyMHz
-        script: Ilo_Memory_Frequency
-docker:
+        attribute: MaximumFrequencyMHz
+        script: Ilo_Generic
+system:
+    C-State:
+      get:
+        URL: /redfish/v1/Systems/{system}/bios/
+        attribute: MinProcIdlePower
+        script: Ilo_System_CState       
+      set:
+        URL: /redfish/v1/Systems/{system}/bios/Settings
+        attribute: MinProcIdlePower
+        script: Ilo_System_CState
     Power:
-        URL: /redfish/v1/Chassis/{chassis}U/Power
-        get: PowerConsumedWatts
-        script: Ilo_Docker_Power
-
-
-
-
-
-
-
+      set:
+        URL: /redfish/v1/Systems/{system}/
+        attribute: ResetType
+        script: Ilo_System_Reset
+    PowerProfile:
+      get:
+        URL: /redfish/v1/Systems/{system}/bios/
+        attribute: PowerProfile
+        script: Ilo_System_PowerProfile       
+      set:
+        URL: /redfish/v1/Systems/{system}/bios/Settings
+        attribute: PowerProfile
+        script: Ilo_System_PowerProfile
+    CPackageState:
+      get:
+        URL: /redfish/v1/Systems/{system}/bios/
+        attribute: MinProcIdlePkgState
+        script: Ilo_System_CPackageState       
+      set:
+        URL: /redfish/v1/Systems/{system}/bios/Settings
+        attribute: MinProcIdlePkgState
+        script: Ilo_System_CPackageState

@@ -59,4 +59,8 @@ class ParamGetError(agentException):
 class DynamicURLCreateError(agentException):
         message = "Error creating dynamic url for the Device"
 class ParamInResponseGetError(agentException):
-        message = "Error getting the param in the response"	
+        message = "Error getting the param in the response"
+class ValueSetError(agentException):
+        message = "Error setting value for the device"
+class ResponseSetError(agentException):
+        message = "Error setting the param in the response"		

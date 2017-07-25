@@ -31,8 +31,8 @@ class Ilo_CPU_Temperature(generic):
            CPUName = "CPU " + CPUNum 	       
 	   
 	    
-	   URL=Util.getURL(entity,obj,attribute)
-	   Param=Util.getParam(entity,obj,attribute)
+	   URL=Util.getURL(entity,obj,attribute,"get")
+	   Param=Util.getParam(entity,obj,attribute,"get")
 
 	   value = generic.getValue(self,session,URL)
 	   json_data = json.loads(value.text)
