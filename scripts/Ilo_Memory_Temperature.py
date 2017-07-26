@@ -28,8 +28,8 @@ class Ilo_Memory_Temperature(generic):
            Proc_Str = "P{0}".format(d["cpu"])   
            ProcDimm = Proc_Str + " DIMM"
    
-	   URL=Util.getURL(entity,obj,attribute)
-	   Param=Util.getParam(entity,obj,attribute)
+	   URL=Util.getURL(entity,obj,attribute,"get")
+	   Param=Util.getParam(entity,obj,attribute,"get")
 	   value = generic.getValue(self,session,URL)
 	   json_data = json.loads(value.text)
 	   try:

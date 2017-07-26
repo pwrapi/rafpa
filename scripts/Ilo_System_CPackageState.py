@@ -14,8 +14,8 @@ class Ilo_System_CPackageState(generic):
 
 
     def get(self,session=None,entity=None,obj=None,attribute=None):
-	 URL=Util.getURL(entity,obj,attribute)
-	 Param=Util.getParam(entity,obj,attribute)
+	 URL=Util.getURL(entity,obj,attribute,"get")
+	 Param=Util.getParam(entity,obj,attribute,"get")
          value = generic.getValue(self,session,URL)
 	 json_data = json.loads(value.text)
 	
@@ -28,8 +28,8 @@ class Ilo_System_CPackageState(generic):
 	 return AttrValue
     
     def set(self,session=None,entity=None,obj=None,attribute=None,value=None):
-	 URL=Util.getURL(entity,obj,attribute)
-	 Param=Util.getParam(entity,obj,attribute)
+	 URL=Util.getURL(entity,obj,attribute,"set")
+	 Param=Util.getParam(entity,obj,attribute,"set")
 	 data={Param:value}     		
          value = generic.setValue(self,session,URL,data)
          StatusCode = value.status_code

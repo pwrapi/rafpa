@@ -14,8 +14,8 @@ class Ilo_System_Reset(generic):
 
     
     def set(self,session=None,entity=None,obj=None,attribute=None,value=None):
-	 URL=Util.getURL(entity,obj,attribute)
-	 Param=Util.getParam(entity,obj,attribute)
+	 URL=Util.getURL(entity,obj,attribute,"set")
+	 Param=Util.getParam(entity,obj,attribute,"set")
 	 data={Param:value}
          Action = URL + "Actions/Oem/Hp/ComputerSystemExt.SystemReset/"	 
          value = generic.postValue(self,session,Action,data)
