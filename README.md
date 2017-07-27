@@ -1,3 +1,9 @@
+# Intro - RAFPA (Redfish Agent for Power API)
+
+Power API core features are exposed to the various clients looking for Power Management across small or large cluster. A device plugin is developed, in current scenario Redfish plugin, which communicates between Power API and the master node. =
+
+Redfish plugin talks to the underlying server which conforms to Redfish Standard via RAFPA.
+
 # Prerequisites and Installation
 
 ## Prerequisites 
