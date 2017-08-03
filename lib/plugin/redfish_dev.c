@@ -233,6 +233,7 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 	
 	now = getTimeSec();
 	p = buf;
+        bzero(p,200); 
 	//pwr_redfish_fd_t *obj = (pwr_redfish_fd_t *)fd;
 
 	a = attrNameToString(type);
@@ -250,7 +251,9 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 		return ERR_NO;
 	}
 	d = strtod(p,NULL);
+        //printf("value in str %s\n", p);
 	bcopy(&d, (double *)ptr, sizeof(double)); 
+        //printf("Value recieved %lf\n", d);
 		
 	return PWR_RET_SUCCESS;
 	
@@ -261,31 +264,27 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 {
 
 	
-	int file_fd;
+	char *a;
+	double now;
 	char string[200];
-	char buf[200], *a;
-	
-	pwr_redfish_fd_t *obj = (pwr_redfish_fd_t *)fd;
-	file_fd = obj->file_fd;
-
+	char buf[200];
+	char *entity = PWR_REDFISH_FD(fd)->dev->entity;
+	char *node = PWR_REDFISH_FD(fd)->dev->node;
+	char *dev_name = PWR_REDFISH_FD(fd)->dev_name;
+	int file_fd = PWR_REDFISH_FD(fd)->file_fd;
+	char *command = (char *) ptr;
+	now = getTimeSec();
 	a = attrNameToString(type);
-	strcpy(ptr, "1234");
-	sprintf(string,"set:ilo:%s:%s:%s:%s;", obj->dev->node, obj->dev_name, a, ptr);
-	//printf("path to be opened %s\n", string);
+	sprintf(string,"set:%s:%s:%s:%s:%s;", entity, node, dev_name, a,command);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
-		//printf("Sending failed\n");
 		return ERR_NO;
 	}
 
-	//printf("path opened\n");
 	if ((recv(file_fd, buf, 10, NULL)) < 0) {
-		//printf("Error while receiving\n");
 		perror("recv :");
 		return ERR_NO;
 	}
-        //printf("Setting value done %s\n", buf);
-
 	return PWR_RET_SUCCESS;
 }
 
