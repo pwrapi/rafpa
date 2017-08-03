@@ -251,6 +251,9 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 		return PWR_RET_FAILURE;
 	}
 	d = strtod(p,NULL);
+	if ( d < 0 ) {
+		return PWR_RET_FAILURE;
+        } 
         //printf("value in str %s\n", p);
 	bcopy(&d, (double *)ptr, sizeof(double)); 
         //printf("Value recieved %lf\n", d);
