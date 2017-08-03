@@ -11,8 +11,6 @@ import json
 from Log import Logger
 log = Logger()
 
-#sys.path.append("/root/home/vinanti/redfishagent")
-
 class Ilo_CPU_Temperature(generic):
 
 

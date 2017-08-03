@@ -13,7 +13,6 @@ from Log import Logger,Log
 log = Logger(Log.DEBUG)
 import string
 import json
-#sys.path.append("/root/home/vinanti/redfishagent")
 
 class Ilo_Memory_Temperature(generic):
 

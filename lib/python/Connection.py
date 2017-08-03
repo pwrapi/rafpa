@@ -9,9 +9,11 @@ from random import randint
 
 from Log import Logger
 log = Logger()
+
 '''
 This Module handles system specific Socket handling functions
 '''
+
 class Connection:
 
     SOCKET_IO_ERROR = None
