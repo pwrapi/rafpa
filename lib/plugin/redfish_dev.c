@@ -242,13 +242,13 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
 		//printf("Sending failed\n");
-		return ERR_NO;
+		return PWR_RET_FAILURE;
 	}
 
 	if ((recv(file_fd, p, 20, NULL)) < 0) {
 		//printf("Error while reading\n");
 		perror("recv :");
-		return ERR_NO;
+		return PWR_RET_FAILURE;
 	}
 	d = strtod(p,NULL);
         //printf("value in str %s\n", p);
@@ -278,12 +278,12 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 	sprintf(string,"set:%s:%s:%s:%s:%s;", entity, node, dev_name, a,command);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
-		return ERR_NO;
+		return PWR_RET_FAILURE;
 	}
 
 	if ((recv(file_fd, buf, 10, NULL)) < 0) {
 		perror("recv :");
-		return ERR_NO;
+		return PWR_RET_FAILURE;
 	}
 	return PWR_RET_SUCCESS;
 }
