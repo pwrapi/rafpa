@@ -19,17 +19,26 @@ chassis:
         URL: /redfish/v1/Chassis/{chassis}/Power/
         attribute: PowerConsumedWatts
         script: Ilo_Generic
+    PowerLimit:
+      get:
+        URL: /redfish/v1/Chassis/{chassis}/Power/
+        attribute: LimitInWatts
+        script: Power_Cap
+      set:
+        URL: /redfish/v1/Chassis/{chassis}/Power/
+        attribute: LimitInWatts
+        script: Power_Cap
 cpu:
     Voltage:
       get:
         URL: /redfish/v1/Systems/{system}/Processors/{cpu}
         attribute: VoltageVoltsX10
-        script: Ilo_CPU_Voltage
+        script: CPU_Voltage
     Temp:
       get:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         attribute: CurrentReading
-        script: Ilo_CPU_Temperature
+        script: CPU_Temperature
     Frequency:
       get:
         URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
@@ -45,7 +54,7 @@ memory:
       get:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         attribute: CurrentReading
-        script: Ilo_Memory_Temperature
+        script: Memory_Temperature
     Frequency:
       get:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
@@ -56,31 +65,31 @@ system:
       get:
         URL: /redfish/v1/Systems/{system}/bios/
         attribute: MinProcIdlePower
-        script: Ilo_System_CState       
+        script: Ilo_System_Generic       
       set:
         URL: /redfish/v1/Systems/{system}/bios/Settings
         attribute: MinProcIdlePower
-        script: Ilo_System_CState
+        script: Ilo_System_Generic
     Power:
       set:
         URL: /redfish/v1/Systems/{system}/
         attribute: ResetType
-        script: Ilo_System_Reset
+        script: System_Reset
     PowerProfile:
       get:
         URL: /redfish/v1/Systems/{system}/bios/
         attribute: PowerProfile
-        script: Ilo_System_PowerProfile       
+        script: Ilo_System_Generic       
       set:
         URL: /redfish/v1/Systems/{system}/bios/Settings
         attribute: PowerProfile
-        script: Ilo_System_PowerProfile
+        script: Ilo_System_Generic
     CPackageState:
       get:
         URL: /redfish/v1/Systems/{system}/bios/
         attribute: MinProcIdlePkgState
-        script: Ilo_System_CPackageState       
+        script: Ilo_System_Generic       
       set:
         URL: /redfish/v1/Systems/{system}/bios/Settings
         attribute: MinProcIdlePkgState
-        script: Ilo_System_CPackageState
+        script: Ilo_System_Generic

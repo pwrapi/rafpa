@@ -10,7 +10,7 @@ import json
 log = Logger()
 #sys.path.append("/root/home/vinanti/redfishagent")
 
-class Ilo_System_Reset(generic):
+class System_Reset(generic):
 
     
     def set(self,session=None,entity=None,obj=None,attribute=None,value=None):

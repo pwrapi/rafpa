@@ -11,16 +11,12 @@ import json
 from Log import Logger
 log = Logger()
 
-#sys.path.append("/root/home/vinanti/redfishagent")
 
-class Ilo_CPU_Temperature(generic):
+class CPU_Temperature(generic):
 
 
     def get(self,session=None,entity=None,obj=None,attribute=None):
         
-#obj="CPU1"
-#CPUNum = obj.split("CPU",1)[1]
-#CPUName = "CPU " + CPUNum
 	   
 	   devices = obj.split(".")
 	   newlist=[]

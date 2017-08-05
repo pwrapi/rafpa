@@ -13,13 +13,11 @@ from Log import Logger,Log
 log = Logger(Log.DEBUG)
 import string
 import json
-#sys.path.append("/root/home/vinanti/redfishagent")
 
-class Ilo_Memory_Temperature(generic):
+class Memory_Temperature(generic):
 
     def get(self,session=None,entity=None,obj=None,attribute=None):
         
-#obj="proc1.dimm8"
 	   dev = obj.replace("#","") 
 	   dev = dev.split(".")
 	   r = re.compile("([a-zA-Z]+)([0-9]+)")

@@ -10,7 +10,7 @@ import json
 log = Logger()
 #sys.path.append("/root/home/vinanti/redfishagent")
 
-class Ilo_System_PowerProfile(generic):
+class Ilo_System_Generic(generic):
 
 
     def get(self,session=None,entity=None,obj=None,attribute=None):
