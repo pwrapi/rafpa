@@ -11,12 +11,8 @@ import json
 from Log import Logger
 log = Logger()
 
-<<<<<<< HEAD:scripts/CPU_Temperature.py
 
 class CPU_Temperature(generic):
-=======
-class Ilo_CPU_Temperature(generic):
->>>>>>> 11d5f97da431779d58969c36afa9830bc7fb17fc:scripts/Ilo_CPU_Temperature.py
 
 
     def get(self,session=None,entity=None,obj=None,attribute=None):
