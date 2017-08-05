@@ -8,7 +8,6 @@ from Log import Logger
 from ExceptionCollection import ParamInResponseGetError
 import json
 log = Logger()
-#sys.path.append("/root/home/vinanti/redfishagent")
 
 class Ilo_Generic(generic):
 

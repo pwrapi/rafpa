@@ -24,9 +24,15 @@ fi
 echo "checking for python and installed versions"
 V=$(pip show Python | grep Version | cut -c10-)
 echo $V
+<<<<<<< HEAD
 Version='2.7.13'
 if [[ -z "$V" ]]; then
    echo "Install Python Version 2.7.13 hence exiting"
+=======
+Version='2.7.11'
+if [[ -z "$V" ]]; then
+   echo "Install Python Version 2.7.11 hence exiting"
+>>>>>>> 11d5f97da431779d58969c36afa9830bc7fb17fc
    exit
 elif [ "$V" == "$Version" ]; then
    echo "Correct Version installed"
@@ -35,6 +41,7 @@ else
    exit
 fi
 #checking for python sdk
+<<<<<<< HEAD
 
 echo "checking for sushy"
 A=$(pip show sushy)
@@ -60,6 +67,8 @@ else
 fi
 
 #checking for python sdk   
+=======
+>>>>>>> 11d5f97da431779d58969c36afa9830bc7fb17fc
 echo "checking for python sdk"
 A=$(pip show python-ilorest-library)
 echo $A	
@@ -69,7 +78,10 @@ if [[ -z "$A" ]]; then
 else
    echo "Correct Version of Python sdk installed"
 fi
+<<<<<<< HEAD
 
+=======
+>>>>>>> 11d5f97da431779d58969c36afa9830bc7fb17fc
 #Cloning the code for PowerAPI-Redfish Plugin from github
 echo "Cloning the code for PowerAPI-Redfish Plugin from github"
 RedfishPluginDIR=$DIR/PowerAPI-Redfish
@@ -77,11 +89,19 @@ if [ -d "$RedfishPluginDIR" ]; then
    echo "Redfish Plugin already exists deleting it and cloning again"
    rm -Rf $RedfishPluginDIR
    cd $DIR
+<<<<<<< HEAD
    git clone https://github.hpe.com/HPC-India/PowerAPI-Redfish.git
    
 else
    cd $DIR
    git clone https://github.hpe.com/HPC-India/PowerAPI-Redfish.git
+=======
+   git clone git@github.hpe.com:HPC-India/PowerAPI-Redfish.git
+   
+else
+   cd $DIR
+   git clone git@github.hpe.com:HPC-India/PowerAPI-Redfish.git
+>>>>>>> 11d5f97da431779d58969c36afa9830bc7fb17fc
 fi   
 
 #checking for Existence of PowerAPI code on the system 

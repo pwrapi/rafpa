@@ -10,7 +10,6 @@ from ExceptionCollection import ParamInResponseGetError,ResponseSetError
 import json
 #log = Logger(Level=Log.DEBUG)
 log = Logger()
-#sys.path.append("/root/home/vinanti/redfishagent")
 
 class Power_Cap(generic):
 
