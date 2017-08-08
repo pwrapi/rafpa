@@ -1,2 +1,0 @@
-gcc `python-config --cflags` -c prog.c
-gcc `python-config --ldflags` -o prog prog.o
