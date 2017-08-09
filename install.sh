@@ -7,9 +7,41 @@ if [[ $COUNT -lt 2 ]]
 then
    echo "Not enough arguments Please specify directory for installation and PowerAPI Path if already installed"
    exit
-fi   
-#creating directory for PowerAPI
+fi 
+#checking OS Version
+echo "checking OS Version"
+OSV=$(lsb_release -si)
+echo $OSV
+UbOS='Ubuntu'
+SlesOS='SUSE'
+if [ "$OSV" == "$UbOS" ]; then
+   command="apt-get"
+elif [ "$OSV" == "$SlesOS" ]; then
+   command="zypper"
+else
+   echo "Check for the OS Version Only SLES and Ubuntu Supported"
+   exit
+fi
+   
+#checking for git 
+echo "checking git"
+if hash git 2>/dev/null; then
+   echo "Git already installed"
+else
+   echo "Git not installed hence installing"
+   $command install git
+fi
 
+#checking for pip
+echo "checking for pip"
+
+if hash pip 2>/dev/null; then
+   echo "pip already installed"
+else
+   echo "pip not installed hence installing"
+   $command install pip
+fi
+#creating directory for PowerAPI
 echo "creating directory for PowerAPI"
 if [ -d "$DIR" ];then
    echo "dir exist deleting and creating again"
@@ -23,7 +55,7 @@ fi
 echo "checking for python and installed versions"
 V=$(pip show Python | grep Version | cut -c10-)
 echo $V
-Version='2.7.13'
+Version='2.7.12'
 if [[ -z "$V" ]]; then
    echo "Install Python Version 2.7.11 hence exiting"
    exit
@@ -34,6 +66,7 @@ else
    exit
 fi
 
+#checking for sushy
 echo "checking for sushy"
 A=$(pip show sushy)
 echo $A	
@@ -51,7 +84,7 @@ A=$(pip show pyyaml)
 echo $A	
 if [[ -z "$A" ]]; then
    echo "Yaml not installed. Installing Yaml"
-   pip install yaml
+   pip install pyyaml
 #exit
 else
    echo "Yaml already installed"
@@ -62,11 +95,13 @@ echo "checking for python sdk"
 A=$(pip show python-ilorest-library)
 echo $A	
 if [[ -z "$A" ]]; then
-   echo "Python sdk not installed. Please install before you start"
-   exit
+   echo "Python sdk not installed. Please install Python SDK for In-Band-Communication"
+   echo "After installation please place the device .so file in your working directory"
+   echo "You can download the so file from the location specfied in the README "
 else
    echo "Correct Version of Python sdk installed"
 fi
+
 #Cloning the code for PowerAPI-Redfish Plugin from github
 echo "Cloning the code for PowerAPI-Redfish Plugin from github"
 RedfishPluginDIR=$DIR/PowerAPI-Redfish
@@ -74,8 +109,7 @@ if [ -d "$RedfishPluginDIR" ]; then
    echo "Redfish Plugin already exists deleting it and cloning again"
    rm -Rf $RedfishPluginDIR
    cd $DIR
-   git clone https://github.hpe.com/HPC-India/PowerAPI-Redfish.git
-   
+   git clone https://github.hpe.com/HPC-India/PowerAPI-Redfish.git   
 else
    cd $DIR
    git clone https://github.hpe.com/HPC-India/PowerAPI-Redfish.git
@@ -86,9 +120,8 @@ fi
 echo "checking for Existence of PowerAPI code on the system"
 #PowerDIR=/opt/A
 if [ -d "$PowerDIR" ]; then
-   echo "PowerAPI exists on the system"      
-else
-   echo "Directory does not exist creating and installing PowerAPI"
+   echo "PowerAPI exists on the system deleting and cloning for RAFPA"      
+   rm -Rf $PowerDIR
    
    PowerAPIdir=$DIR/pwrapi-ref
    echo $PowerAPIdir
@@ -117,10 +150,26 @@ else
 #Checking python path
    echo "checking python path"
    PyPath=$(which python)
-   echo $PyPath   
+   echo $PyPath
+   #Checking for some required libraries for PowerAPI code
+       
+   if hash autoconf 2>/dev/null; then
+      echo "autoconf already installed"
+   else
+      echo "autoconf not installed hence installing"
+      $command install autoconf
+   fi
+
+   if hash libtool 2>/dev/null; then
+      echo "libtool already installed"
+   else
+      echo "libtool not installed hence installing"
+      $command install libtool
+   fi
+
    ./autogen.sh
 
-   ./configure --prefix=/opt/A --with-python=$PyPath
+   ./configure --prefix=$PowerDIR --with-python=$PyPath
    make
    make install  
    echo "PowerAPI installed Successfully" 

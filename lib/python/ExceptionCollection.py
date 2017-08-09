@@ -63,4 +63,6 @@ class ParamInResponseGetError(agentException):
 class ValueSetError(agentException):
         message = "Error setting value for the device"
 class ResponseSetError(agentException):
-        message = "Error setting the param in the response"		
+        message = "Error setting the param in the response"
+class GetConnectionError(agentException):
+        message = "Error is Connection"		
