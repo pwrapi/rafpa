@@ -21,7 +21,7 @@ class Connection:
     SUCCESS = 0
 
 
-    def __init__(self, hostname="0.0.0.0", port=8080):
+    def __init__(self, hostname="0.0.0.0", port = 8080):
 
         # verify the host name.
         # If no host name available. get the host name from config
@@ -36,9 +36,14 @@ class Connection:
         except IOError as ior:
             # Set the Error Flag appropriately
             Connection.SOCKET_IO_ERROR = True
+	    if ior[0] == 98:
+	       print "Port " + str(port) + " is already used by other service."
+	       sys.exit(2)
         except Exception as unknown:
             # Set the Error Flag appropriately
             Connection.SOCKET_UNKNOWN_ERROR = True
+#	except:
+#	    print "8080 port is used by other service"
         return
     def __del__(self):
         log.Info("Closing the connection..")

@@ -10,6 +10,7 @@ from ExceptionCollection import ConfigError, ConfigPathError, SessionCreateError
 log = None
 
 loop = 1
+port = 8080
 def register_signals():
     signal.signal(signal.SIGINT, signal_handler)
     signal.signal(signal.SIGTERM, signal_handler)
@@ -67,7 +68,8 @@ def load_sessions():
 
 def main():
     global loop
-    global log 
+    global log
+    global port	
     log	= Logger(Log.DEBUG)
     try:
         load_config()
@@ -87,7 +89,7 @@ def main():
         log.Error("Unknown Error in  connecting to nodes {0} ".format(e))
         exit(255)
     register_signals()
-    connection = Connection()
+    connection = Connection(port = int(port))
     connection.start_listener()
 
     while loop:

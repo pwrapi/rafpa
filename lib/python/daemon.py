@@ -16,12 +16,13 @@ class Daemon(object):
    Usage: subclass the Daemon class and override the run() method
    """
  
-    def __init__(self, pidfile, stdin='/dev/null',
-                 stdout='/tmp/out', stderr='/tmp/err'):
+    def __init__(self, pidfile, rafpa_dir, stdin='/dev/null',
+                 stdout='/tmp/out', stderr='/var/log/syslog'):
         self.stdin = stdin
         self.stdout = stdout
         self.stderr = stderr
         self.pidfile = pidfile
+	self.rafpa_dir = rafpa_dir
  
     def daemonize(self):
         """
@@ -66,7 +67,7 @@ class Daemon(object):
         os.dup2(stream.fileno(), getattr(sys, name).fileno())
  
     def detach_env(self):
-        os.chdir("/root/Git/PowerAPI-Redfish")
+        os.chdir(self.rafpa_dir)
         os.setsid()
         os.umask(0)
  
