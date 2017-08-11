@@ -24,7 +24,7 @@ cpu:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         attribute: CurrentReading
         script: CPU_Temperature
-    Freq:
+    Freq Limit Max:
       get:
         URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
         attribute: MaxSpeedMHz
@@ -40,7 +40,7 @@ memory:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         attribute: CurrentReading
         script: Memory_Temperature
-    Freq:
+    Freq Limit Max:
       get:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         attribute: MaximumFrequencyMHz
@@ -68,13 +68,4 @@ system:
       set:
         URL: /redfish/v1/Systems/{system}/bios/Settings
         attribute: PowerProfile
-        script: Ilo_System_Generic
-    CPackageState:
-      get:
-        URL: /redfish/v1/Systems/{system}/bios/
-        attribute: MinProcIdlePkgState
-        script: Ilo_System_Generic       
-      set:
-        URL: /redfish/v1/Systems/{system}/bios/Settings
-        attribute: MinProcIdlePkgState
         script: Ilo_System_Generic
