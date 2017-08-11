@@ -34,7 +34,7 @@ memory:
       get:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         attribute: MinimumVoltageVoltsX10
-        script: Ilo_Generic
+        script: Memory_Voltage
     Temp:
       get:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
