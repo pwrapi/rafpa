@@ -37,7 +37,6 @@
 
 typedef struct {
         char *attr_name;
-        //void;
 } pwr_redfish_attr;
 #define PWR_DEV_ATTR(X) ((pwr_redfish_attr *)(X))
 
@@ -48,7 +47,6 @@ typedef struct {
 #define PWR_R_DEVICE(X) ((pwr_redfish_device *)(X))
 
 typedef struct {
-	/* define our data */
 	char *entity;	
 	char *host;
 	char *port;
@@ -72,13 +70,12 @@ static plugin_devops_t devOps = {
     .write  = redfish_dev_write,
     .readv  = redfish_dev_readv,
     .writev = redfish_dev_writev,
-/*
     .time   = redfish_dev_time,
     .clear  = redfish_dev_clear,
-    .log_start = redfish_dev_log_start,
-    .log_stop = redfish_dev_log_stop,
-    .get_samples = redfish_dev_get_samples,
-*/
+        .log_start = redfish_dev_log_start,
+        .log_stop = redfish_dev_log_stop,
+        .get_samples = redfish_dev_get_samples,
+
 };
 
 
@@ -246,7 +243,10 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 	if ( d < 0 ) {
 	    return PWR_RET_FAILURE;
     }
-	bcopy(&d, (double *)ptr, sizeof(double)); 
+	bcopy(&d, (double *)ptr, sizeof(double));
+
+    gettimeofday( &tv, NULL );
+    *ts = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
 
 	return PWR_RET_SUCCESS;
 }
@@ -275,25 +275,34 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 		perror("recv :");
 		return PWR_RET_FAILURE;
 	}
+
 	return PWR_RET_SUCCESS;
 }
 
 
-static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* buf,
-                        PWR_Time ts[], int status[] )
+static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
+                    void* values, PWR_Time ts[], int status[] )
 {
-        return PWR_RET_SUCCESS;
+
+    unsigned int i;
+
+    for( i = 0; i < arraysize; i++ )
+        status[i] = redfish_dev_read( fd, attrs[i], (double *)values+i, sizeof(double), ts+i );
+
+    return PWR_RET_SUCCESS;
 }
 
 
-static int redfish_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* ptr, int status[] )
+static int redfish_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
+                    void* values, int status[] )
 {
 
-        return PWR_RET_SUCCESS;    	
+
+    for( i = 0; i < arraysize; i++ )
+        status[i] = redfish_dev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
+    return PWR_RET_SUCCESS;
 
 }
-
-
 
 static int redfish_dev_close( pwr_fd_t fd )
 {
@@ -306,6 +315,39 @@ static int redfish_dev_final( plugin_devops_t *ops )
     DBGP("\n");
     free(ops->private_data);
     return 0;
+}
+
+static int redfish_dev_time(pwr_fd_t fd, PWR_Time *timestamp )
+{
+    DBGP("\n");
+    return PWR_RET_FAILURE;
+}
+
+static int redfish_dev_clear(pwr_fd_t fd) {
+    DBGP("\n");
+    return PWR_RET_FAILURE;
+}
+
+static int redfish_dev_log_start(pwr_fd_t fd, PWR_AttrName name)
+{
+    DBGP("\n");
+    return PWR_RET_FAILURE;
+
+}
+
+static int redfish_dev_log_stop(pwr_fd_t fd, PWR_AttrName name)
+{
+    DBGP("\n");
+    return PWR_RET_FAILURE;
+
+}
+
+static int redfish_dev_get_samples( pwr_fd_t fd, PWR_AttrName name,
+			PWR_Time* ts, double period, unsigned int* nSamples, void* buf )
+
+{
+	DBGP("period=%f samples=%d\n",period,*nSamples);
+	return PWR_RET_FAILURE;
 }
 
 static plugin_dev_t dev = {
@@ -330,4 +372,4 @@ static double getTimeSec()
 {
 	return getTime() / 1000000000.0;
 }
-  
+
