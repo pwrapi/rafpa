@@ -3,7 +3,7 @@
 import sys
 import os
 from ExceptionCollection import SessionCreateError,deviceConfigReadError, \
-    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError,URLGetError,ParamGetError,DynamicURLCreateError,GetConnectionError
+    ConfigPathError,ModuleImportError,AgentRootPathError,ScriptsPathError,SessionGetError,AttrGetError,URLGetError,ParamGetError,DynamicURLCreateError
 from Config import config
 from Devices import Devices
 from Nodes import Nodes
@@ -114,14 +114,8 @@ def getSushyObject(host,username,password):
         https_url = "https://"+ host
     Account = username
     Password = password
-    		
-    try:
-       sushyobj = sushy.Sushy(https_url+"/redfish/v1",Account,Password,verify = False)
-    except Exception as e:
-       raise GetConnectionError
-    else:    	
-       sushyconnobj = sushy.connector.Connector(https_url,Account,Password,verify = False)
-       return sushyconnobj	
+    sushyobj = sushy.connector.Connector(https_url,Account,Password,verify = False)
+    return sushyobj	
     	
 
 def load_module(mod_name, device, attribute):
