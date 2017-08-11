@@ -281,6 +281,7 @@ static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_Att
 static int redfish_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
         void* values, int status[] )
 {
+    unsigned int i;
     for( i = 0; i < arraysize; i++ )
         status[i] = redfish_dev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
     return PWR_RET_SUCCESS;
@@ -303,7 +304,7 @@ static int redfish_dev_time(pwr_fd_t fd, PWR_Time *timestamp )
 {
     double value;
     DBGP( "Info: reading time from Redfish device\n" );
-    return readfish_dev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );;
+    return redfish_dev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );;
 }
 
 static int redfish_dev_clear(pwr_fd_t fd) {

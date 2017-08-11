@@ -30,6 +30,13 @@ static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_Att
 static int redfish_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[], void* ptr, int status[] );
 static int redfish_dev_parse( const char *initstr, unsigned int *saddr, unsigned int *sport );
 static int redfish_dev_close( pwr_fd_t fd );
+static int redfish_dev_final( plugin_devops_t *ops );
+static int redfish_dev_time(pwr_fd_t fd, PWR_Time *timestamp );
+static int redfish_dev_clear(pwr_fd_t fd);
+static int redfish_dev_log_start(pwr_fd_t fd, PWR_AttrName name);
+static int redfish_dev_log_stop(pwr_fd_t fd, PWR_AttrName name);
+static int redfish_dev_get_samples( pwr_fd_t fd, PWR_AttrName name, PWR_Time* ts, double period, unsigned int* nSamples, void* buf );
+
 static double getTime();
 static double getTimeSec();
 
