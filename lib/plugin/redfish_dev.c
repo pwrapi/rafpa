@@ -1,12 +1,3 @@
-/* Copyright 2014-2016 Sandia Corporation. Under the terms of Contract
- * DE-AC04-94AL85000, there is a non-exclusive license for use of this work
- * by or on behalf of the U.S. Government. Export of this program may require
- * a license from the United States Government.
- *
- * This file is part of the Power API Prototype software package. For license
- * information, see the LICENSE file in the top level directory of the
- * distribution.
-*/
 #include <stdio.h>
 #include <sys/timeb.h>
 #include <sys/time.h>
@@ -80,10 +71,10 @@ static plugin_devops_t devOps = {
 
 
 typedef struct {
-        int fd, cfd;
-        unsigned short local;
-        char* agent_addr;
-        unsigned short agent_port;
+    int fd, cfd;
+    unsigned short local;
+    char* agent_addr;
+    unsigned short agent_port;
 
 } redfish_context;
 #define REDFISH_CNTX(X) ((redfish_context *)(X))
@@ -150,9 +141,7 @@ int parse(char *string, char **entity, char **host, char **port, char **node) {
 	bzero(*node, token_len+1);
 	strncpy(*node, token, token_len);
 	return SUCCESS;
-
-
-}	
+}
 
 
 int redfish_connect(pwr_redfish_dev_t *p) 
@@ -245,8 +234,7 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
     }
 	bcopy(&d, (double *)ptr, sizeof(double));
 
-    gettimeofday( &tv, NULL );
-    *ts = tv.tv_sec*1000000000ULL + tv.tv_usec*1000;
+    *ts = getTime();
 
 	return PWR_RET_SUCCESS;
 }
@@ -281,7 +269,7 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 
 
 static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
-                    void* values, PWR_Time ts[], int status[] )
+        void* values, PWR_Time ts[], int status[] )
 {
 
     unsigned int i;
@@ -294,7 +282,7 @@ static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_Att
 
 
 static int redfish_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
-                    void* values, int status[] )
+        void* values, int status[] )
 {
 
 
@@ -307,7 +295,6 @@ static int redfish_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_At
 static int redfish_dev_close( pwr_fd_t fd )
 {
     DBGP("\n");
-
     return 0;
 }
 static int redfish_dev_final( plugin_devops_t *ops )
