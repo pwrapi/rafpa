@@ -197,8 +197,6 @@ static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
     return fd;
 }
 
-
-
 static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int length, PWR_Time* ts )
 {
 	int ret = 0, len =0, size = 0;
@@ -267,7 +265,6 @@ static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigne
 	return PWR_RET_SUCCESS;
 }
 
-
 static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
         void* values, PWR_Time ts[], int status[] )
 {
@@ -284,8 +281,6 @@ static int redfish_dev_readv( pwr_fd_t fd, unsigned int arraysize, const PWR_Att
 static int redfish_dev_writev( pwr_fd_t fd, unsigned int arraysize, const PWR_AttrName attrs[],
         void* values, int status[] )
 {
-
-
     for( i = 0; i < arraysize; i++ )
         status[i] = redfish_dev_write( fd, attrs[i], (double *)values+i, sizeof(double) );
     return PWR_RET_SUCCESS;
@@ -306,8 +301,9 @@ static int redfish_dev_final( plugin_devops_t *ops )
 
 static int redfish_dev_time(pwr_fd_t fd, PWR_Time *timestamp )
 {
-    DBGP("\n");
-    return PWR_RET_FAILURE;
+    double value;
+    DBGP( "Info: reading time from Redfish device\n" );
+    return readfish_dev_read( fd, PWR_ATTR_POWER, &value, sizeof(double), timestamp );;
 }
 
 static int redfish_dev_clear(pwr_fd_t fd) {
