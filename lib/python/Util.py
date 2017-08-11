@@ -15,8 +15,10 @@ log = Logger()
 configobj = dict()
 nodesobj = dict()
 
-
-from ilorestobject import RestObject
+try:
+    from ilorestobject import RestObject
+except ImportError:
+    log.Warn("For In-Band Communication, Install python-ilorest-library")
 import sushy
 
 
