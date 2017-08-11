@@ -13,19 +13,18 @@ class CPU_Voltage(generic):
 
 
     def get(self,session=None,entity=None,obj=None,attribute=None):
-	 URL=Util.getURL(entity,obj,attribute,"get")
-	 Param=Util.getParam(entity,obj,attribute,"get")
-         value = generic.getValue(self,session,URL)
-	 json_data = json.loads(value.text)
+        URL=Util.getURL(entity,obj,attribute,"get")
+        Param=Util.getParam(entity,obj,attribute,"get")
+        value = generic.getValue(self,session,URL)
+        json_data = json.loads(value.text)
 	
-         try:
+        try:
              AttrValue = json_data["Oem"]["Hp"][Param]
-	 except Exception as e:
-             log.Error("Error in finding Get Parameter in the Response")		   
-	     raise ParamInResponseGetError
-
-     voltage = AttrValue / 10
-	 return voltage
+        except Exception as e:
+            log.Error("Error in finding Get Parameter in the Response")
+            raise ParamInResponseGetError
+        voltage = float(AttrValue) / 10
+        return voltage
          
  
 
