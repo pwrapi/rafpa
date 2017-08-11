@@ -24,7 +24,8 @@ class CPU_Voltage(generic):
              log.Error("Error in finding Get Parameter in the Response")		   
 	     raise ParamInResponseGetError
 
-	 return AttrValue    
+     voltage = AttrValue / 10
+	 return voltage
          
  
 

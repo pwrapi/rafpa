@@ -1,25 +1,10 @@
 chassis:
-    AvgPower:
-      get:
-        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
-        attribute: Average
-        script: Ilo_Generic
-    MaxPower:
-      get:
-        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
-        attribute: Maximum
-        script: Ilo_Generic
-    MinPower:
-      get:
-        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
-        attribute: Minimum
-        script: Ilo_Generic
     Power:
       get:
         URL: /redfish/v1/Chassis/{chassis}/Power/
         attribute: PowerConsumedWatts
         script: Ilo_Generic
-    PowerLimit:
+    Power Limit Max:
       get:
         URL: /redfish/v1/Chassis/{chassis}/Power/
         attribute: LimitInWatts
@@ -39,7 +24,7 @@ cpu:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         attribute: CurrentReading
         script: CPU_Temperature
-    Frequency:
+    Freq:
       get:
         URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
         attribute: MaxSpeedMHz
@@ -55,7 +40,7 @@ memory:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         attribute: CurrentReading
         script: Memory_Temperature
-    Frequency:
+    Freq:
       get:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         attribute: MaximumFrequencyMHz

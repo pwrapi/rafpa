@@ -101,11 +101,10 @@ static plugin_devops_t* redfish_dev_init( const char *initstr )
     plugin_devops_t *dev = malloc( sizeof(devOps) );
     *dev = devOps;
      
-     DBGP("initstr='%s'\n",initstr);
-     //printf("initstr='%s'\n",initstr);
+    DBGP("initstr='%s'\n",initstr);
 
-     if( parse(initstr, &entity, &host, &port, &node) != 0) {
-	return (plugin_devops_t *)NULL;
+    if( parse(initstr, &entity, &host, &port, &node) != 0) {
+	    return (plugin_devops_t *)NULL;
      }	
      pwr_redfish_dev_t *p = malloc( sizeof(pwr_redfish_dev_t ) );
      bzero( p, sizeof(pwr_redfish_dev_t) );
@@ -163,31 +162,29 @@ int redfish_connect(pwr_redfish_dev_t *p)
 {
 	int sockfd = 0;	
 	int k;
-        struct sockaddr_in serv_addr;
+    struct sockaddr_in serv_addr;
 	struct addrinfo *res;
 	int enable = 1;
 	res = malloc(sizeof(struct addrinfo));
 	bzero(res, sizeof(struct addrinfo));
-	//printf("host = %s, port = %s\n", p->host, p->port); 
+
 	if( (k = getaddrinfo(p->host, p->port, NULL, &res)) != 0) {
 		perror("error:");
 		return ERR_NO;
 	}
 
-        if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
-                assert("socket creation failed\n");
+    if((sockfd = socket(AF_INET, SOCK_STREAM, 0)) < 0) {
+        assert("socket creation failed\n");
 		return ERR_NO;
-        }
+    }
 
-	if (connect(sockfd, res->ai_addr,res->ai_addrlen) < 0) {
-     		 perror("connect :");
-		 assert("Connection failed\n");	
+    if (connect(sockfd, res->ai_addr,res->ai_addrlen) < 0) {
+        perror("connect :");
+		assert("Connection failed\n");
 		return ERR_NO;
    	}
 	setsockopt( sockfd, SOL_TCP, TCP_NODELAY, (char *) &enable, sizeof(int) );
 	p->socket_fd = sockfd;
-	//printf("sckfd =%d \n", sockfd);
-	//return SUCCESS;
 	return sockfd;
 }
 
@@ -207,11 +204,9 @@ static pwr_fd_t redfish_dev_open( plugin_devops_t* ops, const char *openstr )
 	strcpy(PWR_REDFISH_FD(fd)->dev_name, openstr);
     
     DBGP("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
-    //printf("Device Name=%s\n", PWR_REDFISH_FD(fd)->dev_name);
-	//printf("entity = %s, node = %s, host = %s, port = %s\n", p->entity, p->node, p->host, p->port);
+
     if((fd->file_fd = redfish_connect(p)) < 0) {
-	//printf("Inside error condition\n");    
-	return (plugin_devops_t *)NULL;
+	    return (plugin_devops_t *)NULL;
     }
     return fd;
 }
@@ -233,40 +228,32 @@ static int redfish_dev_read( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned
 	
 	now = getTimeSec();
 	p = buf;
-        bzero(p,200); 
-	//pwr_redfish_fd_t *obj = (pwr_redfish_fd_t *)fd;
+    bzero(p,200);
+
 
 	a = attrNameToString(type);
 	sprintf(string,"get:%s:%s:%s:%s;", entity, node, dev_name, a);
-	//printf("path to be opened %s\n", string);
 	if ((send(file_fd, string, strlen(string), NULL)) < 0) {
 		perror("send:");
-		//printf("Sending failed\n");
 		return PWR_RET_FAILURE;
 	}
 
 	if ((recv(file_fd, p, 20, NULL)) < 0) {
-		//printf("Error while reading\n");
 		perror("recv :");
 		return PWR_RET_FAILURE;
 	}
 	d = strtod(p,NULL);
 	if ( d < 0 ) {
-		return PWR_RET_FAILURE;
-        } 
-        //printf("value in str %s\n", p);
+	    return PWR_RET_FAILURE;
+    }
 	bcopy(&d, (double *)ptr, sizeof(double)); 
-        //printf("Value recieved %lf\n", d);
-		
+
 	return PWR_RET_SUCCESS;
-	
 }
 
 
 static int redfish_dev_write( pwr_fd_t fd, PWR_AttrName type, void* ptr, unsigned int len )
 {
-
-	
 	char *a;
 	double now;
 	char string[200];
