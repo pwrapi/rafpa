@@ -99,13 +99,13 @@ class handler(object):
         data = str()
         
         while True:
-            buffer = c.recv(50)
+            buffer = c.recv(100)
             if len(buffer) == 0:
                 return
-            data += buffer.strip()
+            data += buffer
             index = data.find(";")
             if index < 0:
-                next
+                continue
 
             try:
                 command_str = data[0:index]
