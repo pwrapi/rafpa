@@ -209,7 +209,7 @@ class handler(object):
             value = handler.set(session,entity, device_name, attr,command)
 #print "----------------------"+value+"------------------\n";
         except Exception as e:
-            log.Error("Error getting value from handler for {0} {1} {2} {3} ".format(type(handler),entity,device_name,attr))
+            log.Error("Error setting value for handler for {0} {1} {2} {3} {4} ".format(type(handler),entity,device_name,attr,command))
             return -1    
         return value
 

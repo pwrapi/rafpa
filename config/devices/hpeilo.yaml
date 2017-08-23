@@ -69,3 +69,12 @@ system:
         URL: /redfish/v1/Systems/{system}/bios/Settings
         attribute: PowerProfile
         script: Ilo_System_Generic
+    P-State:
+      get:
+        URL: /redfish/v1/Systems/{system}/
+        attribute: PowerRegulatorMode
+        script: System_PState       
+      set:
+        URL: /redfish/v1/Systems/{system}/
+        attribute: PowerRegulatorMode
+        script: System_PState
