@@ -20,56 +20,54 @@
 # WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
 
 
-
 import sys
 import os
 from generic import generic
 import Util
-import re
-from ExceptionCollection import ParamInResponseGetError
-CPUName=""
-import json
 from Log import Logger
+#from Log import Log
+from ExceptionCollection import ParamInResponseGetError,ResponseSetError
+import json
+#log = Logger(Level=Log.DEBUG)
 log = Logger()
 
-
-class CPU_Temperature(generic):
+class System_PState(generic):
 
 
     def get(self,session=None,entity=None,obj=None,attribute=None):
-        
-	   
-	   devices = obj.split(".")
-	   newlist=[]
-	   for devs in devices:
-	       newlist.append(devs.split("#"))
-	   devDic = dict(newlist)
-           CPUNum = devDic["cpu"]
-           CPUName = "CPU " + CPUNum 	       
-	   
-	    
-	   URL=Util.getURL(entity,obj,attribute,"get")
-	   Param=Util.getParam(entity,obj,attribute,"get")
+	 URL=Util.getURL(entity,obj,attribute,"get")
+	 Param=Util.getParam(entity,obj,attribute,"get")
+         value = generic.getValue(self,session,URL)
+	 json_data = json.loads(value.text)
+	
+         try:
+             AttrValue = json_data["Oem"]["Hp"][Param]
+	 except Exception as e:
+             log.Error("Error in finding Get Parameter in the Response")		   
+	     raise ParamInResponseGetError
 
-	   value = generic.getValue(self,session,URL)
-	   json_data = json.loads(value.text)
-           try:
+	 return AttrValue
+    
+    def set(self,session=None,entity=None,obj=None,attribute=None,value=None):
+        URL=Util.getURL(entity,obj,attribute,"set")
+        Param=Util.getParam(entity,obj,attribute,"set")
+        try:
 
-	       for key in json_data['Temperatures']:
-	           if CPUName in key['Name']:
-                        return key[Param]
-	                break
+            if (value == "Max" or value == "Min"):
+            
+                data={ "Oem": {"Hp": {Param: value }} }
+                value = generic.setValue(self,session,URL,data)
+                StatusCode = value.status_code
+            else:
+                raise Exception
+        except Exception as e:
+            raise ResponseSetError	
+         	
+        return StatusCode
 
-	           else:
-                        continue                  
-	                
-	           
-           except Exception as e:
-               log.Error("Error in finding Get Parameter in the Response")
-	       raise ParamInResponseGetError
-	      
- 
-
+         
+     
+     
     
        
     

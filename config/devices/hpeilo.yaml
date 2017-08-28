@@ -1,25 +1,10 @@
 chassis:
-    AvgPower:
-      get:
-        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
-        attribute: Average
-        script: Ilo_Generic
-    MaxPower:
-      get:
-        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
-        attribute: Maximum
-        script: Ilo_Generic
-    MinPower:
-      get:
-        URL: /redfish/v1/Chassis/{chassis}/Power/FastPowerMeter
-        attribute: Minimum
-        script: Ilo_Generic
     Power:
       get:
         URL: /redfish/v1/Chassis/{chassis}/Power/
         attribute: PowerConsumedWatts
         script: Ilo_Generic
-    PowerLimit:
+    Power Limit Max:
       get:
         URL: /redfish/v1/Chassis/{chassis}/Power/
         attribute: LimitInWatts
@@ -39,7 +24,7 @@ cpu:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         attribute: CurrentReading
         script: CPU_Temperature
-    Frequency:
+    Freq Limit Max:
       get:
         URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
         attribute: MaxSpeedMHz
@@ -49,13 +34,13 @@ memory:
       get:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         attribute: MinimumVoltageVoltsX10
-        script: Ilo_Generic
+        script: Memory_Voltage
     Temp:
       get:
         URL: /redfish/v1/Chassis/{chassis}/Thermal/
         attribute: CurrentReading
         script: Memory_Temperature
-    Frequency:
+    Freq Limit Max:
       get:
         URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
         attribute: MaximumFrequencyMHz
@@ -84,12 +69,12 @@ system:
         URL: /redfish/v1/Systems/{system}/bios/Settings
         attribute: PowerProfile
         script: Ilo_System_Generic
-    CPackageState:
+    P-State:
       get:
-        URL: /redfish/v1/Systems/{system}/bios/
-        attribute: MinProcIdlePkgState
-        script: Ilo_System_Generic       
+        URL: /redfish/v1/Systems/{system}/
+        attribute: PowerRegulatorMode
+        script: System_PState       
       set:
-        URL: /redfish/v1/Systems/{system}/bios/Settings
-        attribute: MinProcIdlePkgState
-        script: Ilo_System_Generic
+        URL: /redfish/v1/Systems/{system}/
+        attribute: PowerRegulatorMode
+        script: System_PState
