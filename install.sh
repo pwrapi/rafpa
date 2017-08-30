@@ -38,7 +38,7 @@ if hash pip 2>/dev/null; then
    echo "pip already installed"
 else
    echo "pip not installed hence installing"
-   $command install pip
+   $command install python-pip
 fi
 
 #checking for python and installed versions
