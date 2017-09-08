@@ -25,21 +25,14 @@ OSV=$(lsb_release -si)
 echo $OSV
 UbOS='Ubuntu'
 SlesOS='SUSE LINUX'
+
 if [ "$OSV" == "$UbOS" ]; then
    command="apt-get"
-elif [ "$OSV" == "$SlesOS" ]; then
+elif [[ $SlesOS == *"$OSV"* ]]; then
    command="zypper"
 else
    echo "Check for the OS Version Only SLES and Ubuntu Supported"
    exit
-fi
-#checking for git 
-echo "Checking git"
-if hash git 2>/dev/null; then
-   echo "Git already installed. - Yes"
-else
-   echo "Git not installed hence installing"
-   $command install git
 fi
 
 #checking for pip
@@ -54,10 +47,7 @@ fi
 
 #checking for python and installed versions
 echo "Checking for python and installed versions"
-#V=$(pip show Python | grep Version | cut -c10-|cut -d"."  -f1,2)
 V=$(python -V 2>&1 |cut -d " "  -f 2  |cut -d'.' -f1,2)
-#V=$(pip show Python | grep Version | cut -c10-)
-#echo $V
 
 if [[ -z "$V" ]]; then
    echo "Python not installed hence exiting"
