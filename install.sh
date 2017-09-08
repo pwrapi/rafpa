@@ -54,7 +54,8 @@ fi
 
 #checking for python and installed versions
 echo "Checking for python and installed versions"
-V=$(pip show Python | grep Version | cut -c10-|cut -d"."  -f1,2)
+#V=$(pip show Python | grep Version | cut -c10-|cut -d"."  -f1,2)
+V=$(python -V 2>&1 |cut -d " "  -f 2  |cut -d'.' -f1,2)
 #V=$(pip show Python | grep Version | cut -c10-)
 #echo $V
 
