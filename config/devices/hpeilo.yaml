@@ -1,0 +1,80 @@
+chassis:
+    Power:
+      get:
+        URL: /redfish/v1/Chassis/{chassis}/Power/
+        attribute: PowerConsumedWatts
+        script: Ilo_Generic
+    Power Limit Max:
+      get:
+        URL: /redfish/v1/Chassis/{chassis}/Power/
+        attribute: LimitInWatts
+        script: Power_Cap
+      set:
+        URL: /redfish/v1/Chassis/{chassis}/Power/
+        attribute: LimitInWatts
+        script: Power_Cap
+cpu:
+    Voltage:
+      get:
+        URL: /redfish/v1/Systems/{system}/Processors/{cpu}
+        attribute: VoltageVoltsX10
+        script: CPU_Voltage
+    Temp:
+      get:
+        URL: /redfish/v1/Chassis/{chassis}/Thermal/
+        attribute: CurrentReading
+        script: CPU_Temperature
+    Freq Limit Max:
+      get:
+        URL: /redfish/v1/Systems/{system}/Processors/{cpu}/
+        attribute: MaxSpeedMHz
+        script: Ilo_Generic
+memory:
+    Voltage:
+      get:
+        URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
+        attribute: MinimumVoltageVoltsX10
+        script: Memory_Voltage
+    Temp:
+      get:
+        URL: /redfish/v1/Chassis/{chassis}/Thermal/
+        attribute: CurrentReading
+        script: Memory_Temperature
+    Freq Limit Max:
+      get:
+        URL: /redfish/v1/Systems/{system}/Memory/proc{cpu}dimm{memory}
+        attribute: MaximumFrequencyMHz
+        script: Ilo_Generic
+system:
+    C-State:
+      get:
+        URL: /redfish/v1/Systems/{system}/bios/
+        attribute: MinProcIdlePower
+        script: Ilo_System_Generic       
+      set:
+        URL: /redfish/v1/Systems/{system}/bios/Settings
+        attribute: MinProcIdlePower
+        script: Ilo_System_Generic
+    Power:
+      set:
+        URL: /redfish/v1/Systems/{system}/
+        attribute: ResetType
+        script: System_Reset
+    PowerProfile:
+      get:
+        URL: /redfish/v1/Systems/{system}/bios/
+        attribute: PowerProfile
+        script: Ilo_System_Generic       
+      set:
+        URL: /redfish/v1/Systems/{system}/bios/Settings
+        attribute: PowerProfile
+        script: Ilo_System_Generic
+    P-State:
+      get:
+        URL: /redfish/v1/Systems/{system}/
+        attribute: PowerRegulatorMode
+        script: System_PState       
+      set:
+        URL: /redfish/v1/Systems/{system}/
+        attribute: PowerRegulatorMode
+        script: System_PState
