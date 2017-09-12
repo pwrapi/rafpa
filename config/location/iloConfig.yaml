@@ -1,0 +1,4 @@
+node1:
+  hostname: 0.0.0.0
+  username: test
+  password: test
